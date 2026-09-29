@@ -884,6 +884,33 @@ p { margin: 0; }
   .about-teaser__inner { grid-template-columns: 1fr; }
 }
 
+/* Home: outreach gallery ------------------------------------------------- */
+.outreach__head { max-width: 640px; margin-bottom: clamp(32px, 5vw, 48px); }
+.outreach__head .section-title { margin: 14px 0 16px; }
+
+.outreach__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: clamp(150px, 17vw, 220px);
+  gap: clamp(10px, 1.4vw, 16px);
+}
+.outreach__photo { margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--line); }
+.outreach__photo--lead { grid-column: span 2; grid-row: span 2; }
+.outreach__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+}
+.outreach__img--top { object-position: center 20%; }
+.outreach__photo:hover img { transform: scale(1.04); }
+
+@media (max-width: 700px) {
+  .outreach__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }}
+@media (prefers-reduced-motion: reduce) {
+  .outreach__photo img { transition: none; }
+}
+
 /* Image banner (full-bleed, half the viewport tall) --------------------- */
 .banner {
   position: relative;
@@ -1635,6 +1662,12 @@ p { margin: 0; }
 /* CTA -------------------------------------------------------------------- */
 .cta { background: var(--green); padding-block: clamp(64px, 9vw, 90px); text-align: center; }
 .cta__inner { display: flex; flex-direction: column; align-items: center; }
+
+/* Photo variant: team photo under a brand-green scrim */
+.cta--photo { position: relative; overflow: hidden; }
+.cta__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.cta--photo::after { content: ""; position: absolute; inset: 0; background: rgba(18, 74, 18, .84); }
+.cta--photo .cta__inner { position: relative; z-index: 1; }
 .cta__title { color: #fff; font-size: clamp(28px, 4vw, 38px); font-weight: 700; letter-spacing: -0.02em; }
 .cta__body { max-width: 560px; margin: 16px 0 32px; color: rgba(255, 255, 255, .9); font-size: 17px; line-height: 1.7; }
 
