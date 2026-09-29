@@ -884,31 +884,32 @@ p { margin: 0; }
   .about-teaser__inner { grid-template-columns: 1fr; }
 }
 
-/* Home: outreach gallery ------------------------------------------------- */
+/* Photo gallery (home outreach, programs past events) ----------------- */
 .outreach__head { max-width: 640px; margin-bottom: clamp(32px, 5vw, 48px); }
 .outreach__head .section-title { margin: 14px 0 16px; }
 
-.outreach__grid {
+.gallery {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: clamp(150px, 17vw, 220px);
   gap: clamp(10px, 1.4vw, 16px);
 }
-.outreach__photo { margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--line); }
-.outreach__photo--lead { grid-column: span 2; grid-row: span 2; }
-.outreach__photo img {
+.gallery__photo { margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--line); }
+.gallery__photo--lead { grid-column: span 2; grid-row: span 2; }
+.gallery__photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform .6s ease;
 }
-.outreach__img--top { object-position: center 20%; }
-.outreach__photo:hover img { transform: scale(1.04); }
+.gallery__img--top { object-position: center 20%; }
+.gallery__photo:hover img { transform: scale(1.04); }
 
 @media (max-width: 700px) {
-  .outreach__grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }}
+  .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .outreach__photo img { transition: none; }
+  .gallery__photo img { transition: none; }
 }
 
 /* Image banner (full-bleed, half the viewport tall) --------------------- */
@@ -1499,6 +1500,31 @@ p { margin: 0; }
 
 /* Hackathon -------------------------------------------------------------- */
 .tp-hack { padding-block: var(--section-y); }
+
+/* Programs: past program (Metamorphosis) ---------------------------------- */
+.tp-past { padding-block: var(--section-y); background: var(--tinc-surface); border-top: 1px solid var(--tinc-border); }
+.tp-past__head {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px clamp(40px, 6vw, 80px);
+  align-items: end;
+  margin-bottom: clamp(32px, 5vw, 48px);
+}
+.tp-past__head .tp-lede + .tp-lede { margin-top: 14px; }
+.tp-past__roles { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+.tp-past__roles li {
+  padding: 6px 12px;
+  border: 1px solid var(--tinc-border);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+.tp-past .gallery__photo { background: var(--tinc-border); }
+
+@media (max-width: 860px) {
+  .tp-past__head { grid-template-columns: 1fr; }
+}
 
 .tp-hack__head {
   display: flex;
