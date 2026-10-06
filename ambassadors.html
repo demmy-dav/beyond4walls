@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Campus Ambassadors — Beyond 4walls</title>
-  <meta name="description" content="Apply to represent Beyond 4walls on your campus and help bring our programs to students where they are.">
+  <meta name="description" content="Apply to lead Beyond 4walls on your campus. One Leader per school, chosen for G.R.I.T.: grounded, resilient, innovative, teachable.">
   <meta name="theme-color" content="#228B22">
   <meta property="og:title" content="Become a Beyond 4walls Campus Ambassador">
   <meta property="og:description" content="Bridging the gap between the classroom and the real world.">
@@ -39,65 +39,230 @@
   </header>
 
   <main id="main">
-    <section class="page-hero" aria-labelledby="amb-title">
+    <section class="page-hero amb-hero" aria-labelledby="amb-title">
       <div class="container page-hero__inner">
         <p class="eyebrow eyebrow--orange">Campus Ambassadors</p>
-        <h1 id="amb-title" class="page-hero__title">Bring Beyond 4walls to your campus</h1>
-        <p class="page-hero__lede">Ambassadors are our voice in their schools: sharing our programs, rallying students to events like TINC26, and helping us reach the people who need it most. Tell us a little about yourself and we'll be in touch.</p>
+        <h1 id="amb-title" class="page-hero__title">Lead Beyond 4walls on your campus</h1>
+        <p class="page-hero__lede">We pick one Leader per school. We're not looking for the longest CV. We're looking for grit: people who are grounded, resilient, innovative and teachable. Show us yours.</p>
+
+        <ol class="flow" aria-label="How selection works">
+          <li class="flow__step"><span class="flow__dot">1</span>Apply</li>
+          <li class="flow__step"><span class="flow__dot">2</span>G.R.I.T. scoring</li>
+          <li class="flow__step"><span class="flow__dot">3</span>One Leader per school</li>
+          <li class="flow__step"><span class="flow__dot">4</span>2-day onboarding</li>
+          <li class="flow__step"><span class="flow__dot">5</span>Start</li>
+        </ol>
       </div>
     </section>
 
     <section class="apply" aria-labelledby="apply-title">
       <div class="container">
         <form class="apply__card" id="ambassador-form" novalidate>
-          <h2 id="apply-title" class="apply__title">Apply to be an ambassador</h2>
-          <p class="apply__note">Submitting opens WhatsApp with your answers filled in. Just press send.</p>
+          <h2 id="apply-title" class="visually-hidden">Ambassador application</h2>
 
-          <div class="field-grid">
-            <div class="field">
-              <label for="amb-name">Full name</label>
-              <input id="amb-name" name="name" type="text" autocomplete="name" required>
+          <!-- 01 ABOUT YOU -->
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">01</span> About you</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="amb-name">Full name</label>
+                <input id="amb-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="amb-email">Email</label>
+                <input id="amb-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="amb-phone">WhatsApp number</label>
+                <input id="amb-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+              </div>
+              <div class="field">
+                <label for="amb-uni">University</label>
+                <input id="amb-uni" name="university" type="text" autocomplete="organization" required>
+              </div>
+              <div class="field">
+                <label for="amb-campus">Campus</label>
+                <input id="amb-campus" name="campus" type="text" placeholder="e.g. Main campus, Ibadan" required>
+              </div>
+              <div class="field">
+                <label for="amb-dept">Faculty / department</label>
+                <input id="amb-dept" name="department" type="text" required>
+              </div>
+              <div class="field">
+                <label for="amb-level">Level</label>
+                <select id="amb-level" name="level" required>
+                  <option value="">Choose one</option>
+                  <option>100 level</option>
+                  <option>200 level</option>
+                  <option>300 level</option>
+                  <option>400 level</option>
+                  <option>500 level or above</option>
+                  <option>Postgraduate</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="amb-grad">Expected graduation year</label>
+                <select id="amb-grad" name="graduation" required>
+                  <option value="">Choose one</option>
+                  <option>2026</option>
+                  <option>2027</option>
+                  <option>2028</option>
+                  <option>2029</option>
+                  <option>2030</option>
+                  <option>2031 or later</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="amb-ig">Instagram <span class="field__optional">(optional)</span></label>
+                <input id="amb-ig" name="instagram" type="text" placeholder="@yourhandle">
+              </div>
+              <div class="field">
+                <label for="amb-x">X <span class="field__optional">(optional)</span></label>
+                <input id="amb-x" name="x" type="text" placeholder="@yourhandle">
+              </div>
+              <div class="field field--full">
+                <label for="amb-li">LinkedIn <span class="field__optional">(optional)</span></label>
+                <input id="amb-li" name="linkedin" type="text" placeholder="linkedin.com/in/…">
+              </div>
+              <fieldset class="field field--full choice">
+                <legend>Is anyone already leading something similar on your campus?</legend>
+                <div class="choice__row">
+                  <label class="pill"><input type="radio" name="overlap" value="Yes" required><span>Yes</span></label>
+                  <label class="pill"><input type="radio" name="overlap" value="No"><span>No</span></label>
+                  <label class="pill"><input type="radio" name="overlap" value="Not sure"><span>Not sure</span></label>
+                </div>
+                <input name="overlapDetails" type="text" maxlength="200" aria-label="If yes, who and what are they running? (optional)" placeholder="If yes, who and what are they running? (optional)">
+              </fieldset>
             </div>
-            <div class="field">
-              <label for="amb-phone">Phone / WhatsApp number</label>
-              <input id="amb-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+          </fieldset>
+
+          <!-- 02 G.R.I.T. -->
+          <fieldset class="apply__part grit">
+            <legend class="part-head"><span class="part-head__num">02</span> Show us your G.R.I.T.</legend>
+            <p class="part-intro">This is the heart of your application. Answer in your own words; real stories beat polished ones. Each letter fills up as you write.</p>
+
+            <div class="grit-meter" aria-hidden="true">
+              <a href="#grit-g" class="grit-meter__tile grit-meter__tile--g" data-meter="g" tabindex="-1"><span class="grit-meter__letter">G</span><span class="grit-meter__bar"><span></span></span></a>
+              <a href="#grit-r" class="grit-meter__tile grit-meter__tile--r" data-meter="r" tabindex="-1"><span class="grit-meter__letter">R</span><span class="grit-meter__bar"><span></span></span></a>
+              <a href="#grit-i" class="grit-meter__tile grit-meter__tile--i" data-meter="i" tabindex="-1"><span class="grit-meter__letter">I</span><span class="grit-meter__bar"><span></span></span></a>
+              <a href="#grit-t" class="grit-meter__tile grit-meter__tile--t" data-meter="t" tabindex="-1"><span class="grit-meter__letter">T</span><span class="grit-meter__bar"><span></span></span></a>
+              <span class="grit-meter__done">Full G.R.I.T.</span>
             </div>
-            <div class="field">
-              <label for="amb-email">Email</label>
-              <input id="amb-email" name="email" type="email" autocomplete="email" required>
+
+            <div class="grit-card grit-card--g" id="grit-g" data-grit="g">
+              <span class="grit-card__letter" aria-hidden="true">G</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Grounded</p>
+                <label for="amb-grounded" class="grit-card__q">Why do you want to lead Beyond 4walls on your campus? What does “great things from small places” mean to you?</label>
+                <textarea id="amb-grounded" name="grounded" rows="5" maxlength="600" required></textarea>
+                <span class="counter" aria-hidden="true"></span>
+              </div>
             </div>
-            <div class="field">
-              <label for="amb-school">School / university</label>
-              <input id="amb-school" name="school" type="text" autocomplete="organization" required>
+
+            <div class="grit-card grit-card--r" id="grit-r" data-grit="r">
+              <span class="grit-card__letter" aria-hidden="true">R</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Resilient</p>
+                <label for="amb-resilient" class="grit-card__q">Describe a time something you built or led failed or fell apart. What did you do next?</label>
+                <textarea id="amb-resilient" name="resilient" rows="5" maxlength="600" required></textarea>
+                <span class="counter" aria-hidden="true"></span>
+              </div>
             </div>
-            <div class="field">
-              <label for="amb-course">Course of study</label>
-              <input id="amb-course" name="course" type="text" required>
+
+            <div class="grit-card grit-card--i" id="grit-i" data-grit="i">
+              <span class="grit-card__letter" aria-hidden="true">I</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Innovative</p>
+                <fieldset class="choice">
+                  <legend class="grit-card__q">Describe one activity you would run on your campus in your first month. Which pillar does it belong to?</legend>
+                  <div class="choice__row">
+                    <label class="pill"><input type="radio" name="pillar" value="Think" required><span>Think</span></label>
+                    <label class="pill"><input type="radio" name="pillar" value="Create"><span>Create</span></label>
+                    <label class="pill"><input type="radio" name="pillar" value="Stand"><span>Stand</span></label>
+                  </div>
+                </fieldset>
+                <textarea id="amb-innovative" name="innovative" rows="5" maxlength="600" aria-label="Describe the activity" required></textarea>
+                <span class="counter" aria-hidden="true"></span>
+              </div>
             </div>
-            <div class="field">
-              <label for="amb-level">Level / year</label>
-              <select id="amb-level" name="level" required>
-                <option value="">Choose one</option>
-                <option>100 level</option>
-                <option>200 level</option>
-                <option>300 level</option>
-                <option>400 level</option>
-                <option>500 level or above</option>
-                <option>Postgraduate</option>
-              </select>
+
+            <div class="grit-card grit-card--t" id="grit-t" data-grit="t">
+              <span class="grit-card__letter" aria-hidden="true">T</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Teachable</p>
+                <label for="amb-teachable" class="grit-card__q">Tell us about feedback that changed how you did something.</label>
+                <textarea id="amb-teachable" name="teachable" rows="5" maxlength="600" required></textarea>
+                <span class="counter" aria-hidden="true"></span>
+              </div>
             </div>
-            <div class="field field--full">
-              <label for="amb-why">Why do you want to be a campus ambassador?</label>
-              <textarea id="amb-why" name="why" rows="5" required></textarea>
+          </fieldset>
+
+          <!-- 03 CAPACITY -->
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">03</span> Your reach and capacity</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="amb-reach">How many people could you mobilize?</label>
+                <select id="amb-reach" name="reach" required>
+                  <option value="">Choose a range</option>
+                  <option>Under 100</option>
+                  <option>100 to 500</option>
+                  <option>500 to 1,000</option>
+                  <option>1,000 to 5,000</option>
+                  <option>Over 5,000</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="amb-largest">Largest group you've gathered</label>
+                <input id="amb-largest" name="largest" type="number" min="0" inputmode="numeric" placeholder="Number of people" required>
+              </div>
+              <div class="field field--full">
+                <label for="amb-network">Where does that network come from?</label>
+                <input id="amb-network" name="network" type="text" maxlength="200" placeholder="Clubs, group chats, social following…" required>
+              </div>
+              <div class="field field--full">
+                <label for="amb-leadership">Past leadership: roles you've held and events you've organized</label>
+                <textarea id="amb-leadership" name="leadership" rows="4" maxlength="400" required></textarea>
+              </div>
+              <fieldset class="field field--full choice">
+                <legend>Have you ever secured a sponsor, partner or in-kind support?</legend>
+                <div class="choice__row">
+                  <label class="pill"><input type="radio" name="partnership" value="Yes" required><span>Yes</span></label>
+                  <label class="pill"><input type="radio" name="partnership" value="No"><span>No</span></label>
+                </div>
+                <input name="partnershipDetails" type="text" maxlength="200" aria-label="If yes, tell us briefly (optional)" placeholder="If yes, tell us briefly (optional)">
+              </fieldset>
+              <fieldset class="field field--full choice">
+                <legend>Have you written an event or impact report before?</legend>
+                <div class="choice__row">
+                  <label class="pill"><input type="radio" name="reporting" value="Yes" required><span>Yes</span></label>
+                  <label class="pill"><input type="radio" name="reporting" value="No"><span>No</span></label>
+                </div>
+              </fieldset>
+              <fieldset class="field choice">
+                <legend>Can you run one activity a month and attend the 2-day onboarding?</legend>
+                <div class="choice__row">
+                  <label class="pill"><input type="radio" name="commitment" value="Yes" required><span>Yes</span></label>
+                  <label class="pill"><input type="radio" name="commitment" value="No"><span>No</span></label>
+                </div>
+              </fieldset>
+              <div class="field">
+                <label for="amb-hours">Hours available per week</label>
+                <input id="amb-hours" name="hours" type="number" min="1" max="60" inputmode="numeric" required>
+              </div>
+              <div class="field field--full">
+                <label for="amb-team">How would you build your own team?</label>
+                <textarea id="amb-team" name="team" rows="4" maxlength="400" required></textarea>
+              </div>
             </div>
-            <div class="field field--full">
-              <label for="amb-social">Instagram or other social handle <span class="field__optional">(optional)</span></label>
-              <input id="amb-social" name="social" type="text" placeholder="@yourhandle">
-            </div>
+          </fieldset>
+
+          <div class="apply__foot">
+            <p class="apply__note">Submitting opens WhatsApp with your answers filled in. Just press send. We also copy your answers, so you can paste them if anything gets cut off.</p>
+            <p class="apply__error" role="alert" hidden>Please fill in all the required fields.</p>
+            <p class="apply__status" role="status"></p>
+            <button type="submit" class="btn btn--primary apply__submit">Send application on WhatsApp</button>
           </div>
-
-          <p class="apply__error" role="alert" hidden>Please fill in all the required fields.</p>
-          <button type="submit" class="btn btn--primary apply__submit">Send application on WhatsApp</button>
         </form>
       </div>
     </section>

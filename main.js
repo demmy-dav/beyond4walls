@@ -239,41 +239,146 @@ document.querySelectorAll('[data-register]').forEach((link) => {
   const form = document.getElementById('ambassador-form');
   if (!form) return;
   const error = form.querySelector('.apply__error');
+  const status = form.querySelector('.apply__status');
+  const meter = form.querySelector('.grit-meter');
 
-  const labels = {
-    name: 'Name',
-    phone: 'Phone',
-    email: 'Email',
-    school: 'School',
-    course: 'Course',
-    level: 'Level',
-    social: 'Social handle',
-    why: 'Why I want to be an ambassador',
-  };
+  // G.R.I.T. letters fill as each answer grows; this many characters reads as a solid answer
+  const SOLID = 200;
+  const cards = Array.from(form.querySelectorAll('[data-grit]'));
+
+  function updateCard(card) {
+    const key = card.dataset.grit;
+    const textarea = card.querySelector('textarea');
+    const len = textarea.value.trim().length;
+    let p = Math.min(len / SOLID, 1);
+    // Innovative also needs a pillar picked before it counts as full
+    if (key === 'i' && !form.querySelector('input[name="pillar"]:checked')) p = Math.min(p, 0.9);
+
+    const tile = meter.querySelector(`[data-meter="${key}"]`);
+    [card, tile].forEach((el) => {
+      el.style.setProperty('--p', p);
+      el.classList.toggle('is-full', p === 1);
+    });
+    card.querySelector('.counter').textContent = `${textarea.value.length} / ${textarea.maxLength}`;
+    meter.classList.toggle('is-complete', cards.every((c) => c.classList.contains('is-full')));
+  }
+
+  cards.forEach((card) => {
+    card.addEventListener('input', () => updateCard(card));
+    card.addEventListener('change', () => updateCard(card));
+    updateCard(card);
+  });
+
+  // Meter letters jump to their question
+  meter.querySelectorAll('[data-meter]').forEach((tile) => {
+    tile.addEventListener('click', (e) => {
+      e.preventDefault();
+      const textarea = document.getElementById(`grit-${tile.dataset.meter}`).querySelector('textarea');
+      textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      textarea.focus({ preventScroll: true });
+    });
+  });
+
+  // Cards rise in as they scroll into view
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+    cards.forEach((card) => observer.observe(card));
+  } else {
+    cards.forEach((card) => card.classList.add('is-visible'));
+  }
+
+  // Validation
+  function isValid(field) {
+    if (field.type === 'radio') return !!form.querySelector(`input[name="${field.name}"]:checked`);
+    return field.checkValidity() && (!field.required || field.value.trim() !== '');
+  }
+  function markField(field, valid) {
+    const target = field.type === 'radio' ? field.closest('.choice') : field;
+    target.setAttribute('aria-invalid', String(!valid));
+  }
+
+  form.addEventListener('input', (e) => {
+    if (e.target.matches('[aria-invalid="true"]') || e.target.closest('[aria-invalid="true"]')) {
+      markField(e.target, isValid(e.target));
+    }
+  });
+  form.addEventListener('change', (e) => {
+    if (e.target.type === 'radio') markField(e.target, true);
+  });
+
+  // Message layout, in the same order as the form
+  const sections = [
+    ['ABOUT ME', [
+      ['name', 'Name'], ['email', 'Email'], ['phone', 'WhatsApp'],
+      ['university', 'University'], ['campus', 'Campus'], ['department', 'Faculty/department'],
+      ['level', 'Level'], ['graduation', 'Expected graduation'],
+      ['instagram', 'Instagram'], ['x', 'X'], ['linkedin', 'LinkedIn'],
+      ['overlap', 'Someone already leading something similar on campus'], ['overlapDetails', 'Details'],
+    ]],
+    ['G.R.I.T.', [
+      ['grounded', 'G (Grounded): Why I want to lead'],
+      ['resilient', 'R (Resilient): A time it fell apart'],
+      ['pillar', 'I (Innovative): First-month activity pillar'],
+      ['innovative', 'I (Innovative): The activity'],
+      ['teachable', 'T (Teachable): Feedback that changed me'],
+    ]],
+    ['REACH & CAPACITY', [
+      ['reach', 'Network I can mobilize'], ['network', 'Where it comes from'],
+      ['largest', 'Largest group gathered'], ['leadership', 'Past leadership'],
+      ['partnership', 'Secured a sponsor/partner before'], ['partnershipDetails', 'Details'],
+      ['reporting', 'Written an event/impact report'],
+      ['commitment', 'One activity a month + 2-day onboarding'], ['hours', 'Hours per week'],
+      ['team', 'How I would build my team'],
+    ]],
+  ];
+
+  function buildMessage() {
+    const data = new FormData(form);
+    const lines = ['Hi Beyond 4walls, here is my Campus Ambassador application.'];
+    sections.forEach(([title, fields]) => {
+      lines.push('', `*${title}*`);
+      fields.forEach(([key, label]) => {
+        const value = String(data.get(key) || '').trim();
+        if (value) lines.push(`${label}: ${value}`);
+      });
+    });
+    return lines.join('\n');
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     let firstInvalid = null;
-    form.querySelectorAll('input, select, textarea').forEach((field) => {
-      const valid = field.checkValidity() && (!field.required || field.value.trim() !== '');
-      field.setAttribute('aria-invalid', String(!valid));
+    form.querySelectorAll('[required], input[type="radio"]').forEach((field) => {
+      if (!field.required && field.type !== 'radio') return;
+      const valid = isValid(field);
+      markField(field, valid);
       if (!valid && !firstInvalid) firstInvalid = field;
     });
     error.hidden = !firstInvalid;
     if (firstInvalid) {
+      status.textContent = '';
       firstInvalid.focus();
       return;
     }
 
-    const data = new FormData(form);
-    const lines = ['Hi Beyond 4walls, I would like to be a campus ambassador.', ''];
-    Object.entries(labels).forEach(([key, label]) => {
-      const value = String(data.get(key) || '').trim();
-      if (value) lines.push(`${label}: ${value}`);
-    });
+    const message = buildMessage();
+    window.open('https://wa.me/2349043606531?text=' + encodeURIComponent(message), '_blank', 'noopener');
 
-    const url = 'https://wa.me/2349043606531?text=' + encodeURIComponent(lines.join('\n'));
-    window.open(url, '_blank', 'noopener');
+    // Long applications can get trimmed by some WhatsApp apps, so keep a copy on the clipboard
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(message).then(
+        () => { status.textContent = 'WhatsApp is opening. Your answers are also copied, so you can paste them if anything is missing.'; },
+        () => { status.textContent = 'WhatsApp is opening. Press send to submit your application.'; }
+      );
+    } else {
+      status.textContent = 'WhatsApp is opening. Press send to submit your application.';
+    }
   });
 })();
