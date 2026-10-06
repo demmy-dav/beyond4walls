@@ -238,7 +238,29 @@ document.querySelectorAll('[data-register]').forEach((link) => {
 // action attribute is the no-JS fallback.
 const formKit = (function () {
   const INBOX = 'https://formsubmit.co/ajax/hello@beyond4wallsed.org';
-  const FAILED = 'Sorry, that didn’t go through. Please try again, or email us at hello@beyond4wallsed.org.';
+  const EMAIL = 'hello@beyond4wallsed.org';
+  const WHATSAPP = 'https://wa.me/2349043606531?text=' +
+    encodeURIComponent('Hi Beyond 4walls, I tried to send a message on your website but it didn’t go through.');
+
+  function link(href, text) {
+    const a = document.createElement('a');
+    a.className = 'text-link';
+    a.href = href;
+    a.textContent = text;
+    if (href.startsWith('http')) { a.target = '_blank'; a.rel = 'noopener'; }
+    return a;
+  }
+
+  // Friendly message with ways to reach us that don't depend on the form
+  function showFailure(status) {
+    status.replaceChildren(
+      'Sorry, that didn’t go through. Please try again, email us at ',
+      link(`mailto:${EMAIL}`, EMAIL),
+      ', or ',
+      link(WHATSAPP, 'message us on WhatsApp'),
+      '.'
+    );
+  }
 
   function isValid(form, field) {
     if (field.type === 'radio') return !!form.querySelector(`input[name="${field.name}"]:checked`);
@@ -301,8 +323,11 @@ const formKit = (function () {
             ...payload(new FormData(form)),
           }),
         });
+        // FormSubmit can answer 200 with success "false" (e.g. the inbox hasn't activated the form yet)
         const result = await res.json().catch(() => ({}));
-        if (!res.ok || String(result.success) !== 'true') throw new Error(result.message || res.status);
+        if (!res.ok || String(result.success) !== 'true') {
+          throw new Error(`FormSubmit ${res.status}: ${result.message || 'no message'}`);
+        }
 
         const done = document.createElement('div');
         done.className = 'sent';
@@ -311,7 +336,8 @@ const formKit = (function () {
         done.querySelector('.sent__title').focus();
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (err) {
-        status.textContent = FAILED;
+        console.error('Form submission failed:', err);
+        showFailure(status);
         button.disabled = false;
         button.textContent = label;
       }
