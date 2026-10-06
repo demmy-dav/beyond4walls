@@ -1963,10 +1963,30 @@ p { margin: 0; }
 }
 
 .apply__foot { margin-top: 44px; padding-top: 32px; border-top: 1px solid var(--line); }
-.apply__note { max-width: 620px; color: var(--muted); }
-.apply__error { margin-top: 16px; color: #C62828; font-weight: 600; }
-.apply__status:not(:empty) { margin-top: 16px; color: var(--green-dark); font-weight: 600; }
-.apply__submit { margin-top: 24px; }
+.apply__error { margin-bottom: 16px; color: #C62828; font-weight: 600; }
+.apply__status:not(:empty) { margin-bottom: 16px; color: var(--green-dark); font-weight: 600; }
+.apply__submit:disabled { opacity: .7; cursor: progress; }
+
+/* Contact form */
+.text-link { color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.text-link:hover { color: var(--green-dark); }
+.contact-message { margin-top: 28px; }
+
+/* Thank-you note that replaces a form once it's sent */
+.sent { padding-block: clamp(24px, 6vw, 56px); text-align: center; animation: flow-in .5s cubic-bezier(.2, .8, .2, 1) both; }
+.sent__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 64px; height: 64px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  animation: pop .5s .2s ease-out both;
+}
+.sent__title { font-size: clamp(24px, 3vw, 30px); font-weight: 700; letter-spacing: -0.01em; }
+.sent__title:focus { outline: none; }
+.sent__body { max-width: 520px; margin: 12px auto 0; color: var(--muted); font-size: 17px; line-height: 1.7; }
 
 @media (max-width: 640px) {
   .field-grid { grid-template-columns: 1fr; }
@@ -2007,7 +2027,7 @@ p { margin: 0; }
 .footer__brand p { max-width: 320px; line-height: 1.7; }
 
 .footer__col { display: flex; flex-direction: column; gap: 12px; }
-.footer__col a { width: fit-content; transition: color .2s; }
+.footer__col a { width: fit-content; max-width: 100%; overflow-wrap: anywhere; transition: color .2s; }
 .footer__col a:hover { color: #fff; }
 
 .footer__heading {

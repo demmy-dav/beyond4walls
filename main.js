@@ -233,13 +233,126 @@ document.querySelectorAll('[data-register]').forEach((link) => {
   }
 });
 
-// Campus ambassador form: there is no backend, so validate and hand the
-// answers to WhatsApp as a pre-filled message.
+// Forms (contact, campus ambassadors). The site has no backend, so submissions
+// go through FormSubmit, which emails them to our inbox. Each form's plain
+// action attribute is the no-JS fallback.
+const formKit = (function () {
+  const INBOX = 'https://formsubmit.co/ajax/hello@beyond4wallsed.org';
+  const FAILED = 'Sorry, that didn’t go through. Please try again, or email us at hello@beyond4wallsed.org.';
+
+  function isValid(form, field) {
+    if (field.type === 'radio') return !!form.querySelector(`input[name="${field.name}"]:checked`);
+    return field.checkValidity() && (!field.required || field.value.trim() !== '');
+  }
+  function markField(field, valid) {
+    const target = field.type === 'radio' ? field.closest('.choice') : field;
+    target.setAttribute('aria-invalid', String(!valid));
+  }
+
+  // Marks every required field and returns the first invalid one, if any
+  function validate(form) {
+    let firstInvalid = null;
+    form.querySelectorAll('[required], input[type="radio"]').forEach((field) => {
+      const valid = isValid(form, field);
+      markField(field, valid);
+      if (!valid && !firstInvalid) firstInvalid = field;
+    });
+    return firstInvalid;
+  }
+
+  // Clear the error state as soon as a flagged field is fixed
+  function liveValidation(form) {
+    form.addEventListener('input', (e) => {
+      if (e.target.closest('[aria-invalid="true"]')) markField(e.target, isValid(form, e.target));
+    });
+    form.addEventListener('change', (e) => {
+      if (e.target.type === 'radio') markField(e.target, true);
+    });
+  }
+
+  // Validates, sends `payload()` to the inbox, then swaps the form for a thank-you note
+  function handleSubmit(form, { payload, thanks }) {
+    const error = form.querySelector('.apply__error');
+    const status = form.querySelector('.apply__status');
+    const button = form.querySelector('[type="submit"]');
+    const label = button.textContent;
+    liveValidation(form);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const firstInvalid = validate(form);
+      error.hidden = !firstInvalid;
+      if (firstInvalid) {
+        status.textContent = '';
+        firstInvalid.focus();
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      status.textContent = '';
+      try {
+        const res = await fetch(INBOX, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            _template: 'table',
+            _honey: form.elements._honey ? form.elements._honey.value : '',
+            ...payload(new FormData(form)),
+          }),
+        });
+        const result = await res.json().catch(() => ({}));
+        if (!res.ok || String(result.success) !== 'true') throw new Error(result.message || res.status);
+
+        const done = document.createElement('div');
+        done.className = 'sent';
+        done.innerHTML = `<span class="sent__icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h2 class="sent__title" tabindex="-1">${thanks.title}</h2><p class="sent__body">${thanks.body}</p>`;
+        form.replaceChildren(done);
+        done.querySelector('.sent__title').focus();
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        status.textContent = FAILED;
+        button.disabled = false;
+        button.textContent = label;
+      }
+    });
+  }
+
+  return { handleSubmit };
+})();
+
+// Contact form
+(function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  // Links like /contact?topic=partner pre-select a topic
+  const topic = new URLSearchParams(location.search).get('topic');
+  const preset = topic && form.querySelector(`input[data-topic="${CSS.escape(topic)}"]`);
+  if (preset) preset.checked = true;
+
+  formKit.handleSubmit(form, {
+    payload: (data) => ({
+      _subject: `Website message: ${data.get('topic')} (from ${data.get('name')})`,
+      _replyto: data.get('email'),
+      Topic: data.get('topic'),
+      Name: data.get('name'),
+      Email: data.get('email'),
+      Phone: data.get('phone') || '-',
+      'Organization or school': data.get('organization') || '-',
+      Message: data.get('message'),
+    }),
+    thanks: {
+      title: 'Message sent. Thank you!',
+      body: 'We’ve got it and will reply to your email soon.',
+    },
+  });
+})();
+
+// Campus ambassador application
 (function () {
   const form = document.getElementById('ambassador-form');
   if (!form) return;
-  const error = form.querySelector('.apply__error');
-  const status = form.querySelector('.apply__status');
   const meter = form.querySelector('.grit-meter');
 
   // G.R.I.T. letters fill as each answer grows; this many characters reads as a solid answer
@@ -293,92 +406,40 @@ document.querySelectorAll('[data-register]').forEach((link) => {
     cards.forEach((card) => card.classList.add('is-visible'));
   }
 
-  // Validation
-  function isValid(field) {
-    if (field.type === 'radio') return !!form.querySelector(`input[name="${field.name}"]:checked`);
-    return field.checkValidity() && (!field.required || field.value.trim() !== '');
-  }
-  function markField(field, valid) {
-    const target = field.type === 'radio' ? field.closest('.choice') : field;
-    target.setAttribute('aria-invalid', String(!valid));
-  }
-
-  form.addEventListener('input', (e) => {
-    if (e.target.matches('[aria-invalid="true"]') || e.target.closest('[aria-invalid="true"]')) {
-      markField(e.target, isValid(e.target));
-    }
-  });
-  form.addEventListener('change', (e) => {
-    if (e.target.type === 'radio') markField(e.target, true);
-  });
-
-  // Message layout, in the same order as the form
-  const sections = [
-    ['ABOUT ME', [
-      ['name', 'Name'], ['email', 'Email'], ['phone', 'WhatsApp'],
-      ['university', 'University'], ['campus', 'Campus'], ['department', 'Faculty/department'],
-      ['level', 'Level'], ['graduation', 'Expected graduation'],
-      ['instagram', 'Instagram'], ['x', 'X'], ['linkedin', 'LinkedIn'],
-      ['overlap', 'Someone already leading something similar on campus'], ['overlapDetails', 'Details'],
-    ]],
-    ['G.R.I.T.', [
-      ['grounded', 'G (Grounded): Why I want to lead'],
-      ['resilient', 'R (Resilient): A time it fell apart'],
-      ['pillar', 'I (Innovative): First-month activity pillar'],
-      ['innovative', 'I (Innovative): The activity'],
-      ['teachable', 'T (Teachable): Feedback that changed me'],
-    ]],
-    ['REACH & CAPACITY', [
-      ['reach', 'Network I can mobilize'], ['network', 'Where it comes from'],
-      ['largest', 'Largest group gathered'], ['leadership', 'Past leadership'],
-      ['partnership', 'Secured a sponsor/partner before'], ['partnershipDetails', 'Details'],
-      ['reporting', 'Written an event/impact report'],
-      ['commitment', 'One activity a month + 2-day onboarding'], ['hours', 'Hours per week'],
-      ['team', 'How I would build my team'],
-    ]],
+  // Email layout, in the same order as the form
+  const fields = [
+    ['name', 'Name'], ['email', 'Email'], ['phone', 'WhatsApp'],
+    ['university', 'University'], ['campus', 'Campus'], ['department', 'Faculty/department'],
+    ['level', 'Level'], ['graduation', 'Expected graduation'],
+    ['instagram', 'Instagram'], ['x', 'X'], ['linkedin', 'LinkedIn'],
+    ['overlap', 'Someone already leading something similar on campus'], ['overlapDetails', 'Who / what'],
+    ['grounded', 'G · Grounded: Why I want to lead'],
+    ['resilient', 'R · Resilient: A time it fell apart'],
+    ['pillar', 'I · Innovative: Pillar'],
+    ['innovative', 'I · Innovative: First-month activity'],
+    ['teachable', 'T · Teachable: Feedback that changed me'],
+    ['reach', 'Network I can mobilize'], ['network', 'Where it comes from'],
+    ['largest', 'Largest group gathered'], ['leadership', 'Past leadership'],
+    ['partnership', 'Secured a sponsor/partner before'], ['partnershipDetails', 'Sponsor/partner details'],
+    ['reporting', 'Written an event/impact report'],
+    ['commitment', 'One activity a month + 2-day onboarding'], ['hours', 'Hours per week'],
+    ['team', 'How I would build my team'],
   ];
 
-  function buildMessage() {
-    const data = new FormData(form);
-    const lines = ['Hi Beyond 4walls, here is my Campus Ambassador application.'];
-    sections.forEach(([title, fields]) => {
-      lines.push('', `*${title}*`);
+  formKit.handleSubmit(form, {
+    payload: (data) => {
+      const out = {
+        _subject: `Campus Ambassador application: ${data.get('name')} (${data.get('university')})`,
+        _replyto: data.get('email'),
+      };
       fields.forEach(([key, label]) => {
-        const value = String(data.get(key) || '').trim();
-        if (value) lines.push(`${label}: ${value}`);
+        out[label] = String(data.get(key) || '').trim() || '-';
       });
-    });
-    return lines.join('\n');
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    let firstInvalid = null;
-    form.querySelectorAll('[required], input[type="radio"]').forEach((field) => {
-      if (!field.required && field.type !== 'radio') return;
-      const valid = isValid(field);
-      markField(field, valid);
-      if (!valid && !firstInvalid) firstInvalid = field;
-    });
-    error.hidden = !firstInvalid;
-    if (firstInvalid) {
-      status.textContent = '';
-      firstInvalid.focus();
-      return;
-    }
-
-    const message = buildMessage();
-    window.open('https://wa.me/2349043606531?text=' + encodeURIComponent(message), '_blank', 'noopener');
-
-    // Long applications can get trimmed by some WhatsApp apps, so keep a copy on the clipboard
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(message).then(
-        () => { status.textContent = 'WhatsApp is opening. Your answers are also copied, so you can paste them if anything is missing.'; },
-        () => { status.textContent = 'WhatsApp is opening. Press send to submit your application.'; }
-      );
-    } else {
-      status.textContent = 'WhatsApp is opening. Press send to submit your application.';
-    }
+      return out;
+    },
+    thanks: {
+      title: 'Application received. Thank you!',
+      body: 'Your G.R.I.T. is on its way to our team. We’ll review every application and be in touch.',
+    },
   });
 })();
