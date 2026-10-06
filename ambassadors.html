@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Ambassadors — Beyond 4walls</title>
+  <meta name="description" content="Apply to represent Beyond 4walls on your campus and help bring our programs to students where they are.">
+  <meta name="theme-color" content="#228B22">
+  <meta property="og:title" content="Become a Beyond 4walls Campus Ambassador">
+  <meta property="og:description" content="Bridging the gap between the classroom and the real world.">
+  <meta property="og:image" content="assets/logo-b4w-black.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAV -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="nav__brand" aria-label="Beyond 4walls home">
+        <img src="assets/logo-b4w-black.png" alt="Beyond 4walls" width="95" height="40">
+      </a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        <span class="visually-hidden">Menu</span>
+        <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <nav id="nav-menu" class="nav__menu" aria-label="Primary">
+        <a href="/about" class="nav__link">About</a>
+        <a href="/programs" class="nav__link">Programs</a>
+        <a href="https://wa.me/2349043606531?text=Hi%20Beyond%204walls%2C%20I%27d%20like%20to%20get%20in%20touch." target="_blank" rel="noopener" class="nav__link">Contact</a>
+        <a href="https://wa.me/2349043606531?text=Hi%20Beyond%204walls%2C%20I%20would%20like%20to%20get%20involved." target="_blank" rel="noopener" class="btn btn--primary btn--sm">Get Involved</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero" aria-labelledby="amb-title">
+      <div class="container page-hero__inner">
+        <p class="eyebrow eyebrow--orange">Campus Ambassadors</p>
+        <h1 id="amb-title" class="page-hero__title">Bring Beyond 4walls to your campus</h1>
+        <p class="page-hero__lede">Ambassadors are our voice in their schools: sharing our programs, rallying students to events like TINC26, and helping us reach the people who need it most. Tell us a little about yourself and we'll be in touch.</p>
+      </div>
+    </section>
+
+    <section class="apply" aria-labelledby="apply-title">
+      <div class="container">
+        <form class="apply__card" id="ambassador-form" novalidate>
+          <h2 id="apply-title" class="apply__title">Apply to be an ambassador</h2>
+          <p class="apply__note">Submitting opens WhatsApp with your answers filled in. Just press send.</p>
+
+          <div class="field-grid">
+            <div class="field">
+              <label for="amb-name">Full name</label>
+              <input id="amb-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="amb-phone">Phone / WhatsApp number</label>
+              <input id="amb-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+            </div>
+            <div class="field">
+              <label for="amb-email">Email</label>
+              <input id="amb-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="amb-school">School / university</label>
+              <input id="amb-school" name="school" type="text" autocomplete="organization" required>
+            </div>
+            <div class="field">
+              <label for="amb-course">Course of study</label>
+              <input id="amb-course" name="course" type="text" required>
+            </div>
+            <div class="field">
+              <label for="amb-level">Level / year</label>
+              <select id="amb-level" name="level" required>
+                <option value="">Choose one</option>
+                <option>100 level</option>
+                <option>200 level</option>
+                <option>300 level</option>
+                <option>400 level</option>
+                <option>500 level or above</option>
+                <option>Postgraduate</option>
+              </select>
+            </div>
+            <div class="field field--full">
+              <label for="amb-why">Why do you want to be a campus ambassador?</label>
+              <textarea id="amb-why" name="why" rows="5" required></textarea>
+            </div>
+            <div class="field field--full">
+              <label for="amb-social">Instagram or other social handle <span class="field__optional">(optional)</span></label>
+              <input id="amb-social" name="social" type="text" placeholder="@yourhandle">
+            </div>
+          </div>
+
+          <p class="apply__error" role="alert" hidden>Please fill in all the required fields.</p>
+          <button type="submit" class="btn btn--primary apply__submit">Send application on WhatsApp</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="assets/logo-b4w-white.png" alt="Beyond 4walls" width="117" height="60" loading="lazy">
+          <p>A group of young change-makers bridging the gap between the classroom and the real world.</p>
+        </div>
+        <nav class="footer__col" aria-label="Explore">
+          <h3 class="footer__heading">Explore</h3>
+          <a href="/about">About</a>
+          <a href="/programs">Programs</a>
+          <a href="/programs#hackathon">TINC26 Hackathon</a>
+          <a href="/ambassadors">Campus Ambassadors</a>
+        </nav>
+        <!-- TODO: add an email address alongside WhatsApp -->
+        <div class="footer__col">
+          <h3 class="footer__heading">Contact</h3>
+          <a href="https://wa.me/2349043606531?text=Hi%20Beyond%204walls%2C%20I%27d%20like%20to%20get%20in%20touch." target="_blank" rel="noopener">WhatsApp us</a>
+          <a href="https://wa.me/2349043606531?text=Hi%20Beyond%204walls%2C%20I%20would%20like%20to%20partner%20with%20you." target="_blank" rel="noopener">Partner with us</a>
+          <a href="https://wa.me/2349043606531?text=Hi%20Beyond%204walls%2C%20I%20am%20interested%20in%20sponsoring%20TINC26." target="_blank" rel="noopener">Sponsor TINC26</a>
+        </div>
+        <!-- TODO: add real X and LinkedIn profile URLs -->
+        <div class="footer__col">
+          <h3 class="footer__heading">Follow</h3>
+          <div class="socials">
+            <a href="https://www.instagram.com/b4w___/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+            </a>
+            <a href="#" aria-label="X">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10.5V17M8 7.2v.1M12 17v-6.5M12 13.5c0-2 1.3-3 2.7-3s2.3 1 2.3 3V17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="footer__legal">© 2026 Beyond 4walls. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

@@ -232,3 +232,48 @@ document.querySelectorAll('[data-register]').forEach((link) => {
     link.addEventListener('click', (e) => e.preventDefault());
   }
 });
+
+// Campus ambassador form: there is no backend, so validate and hand the
+// answers to WhatsApp as a pre-filled message.
+(function () {
+  const form = document.getElementById('ambassador-form');
+  if (!form) return;
+  const error = form.querySelector('.apply__error');
+
+  const labels = {
+    name: 'Name',
+    phone: 'Phone',
+    email: 'Email',
+    school: 'School',
+    course: 'Course',
+    level: 'Level',
+    social: 'Social handle',
+    why: 'Why I want to be an ambassador',
+  };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let firstInvalid = null;
+    form.querySelectorAll('input, select, textarea').forEach((field) => {
+      const valid = field.checkValidity() && (!field.required || field.value.trim() !== '');
+      field.setAttribute('aria-invalid', String(!valid));
+      if (!valid && !firstInvalid) firstInvalid = field;
+    });
+    error.hidden = !firstInvalid;
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    const data = new FormData(form);
+    const lines = ['Hi Beyond 4walls, I would like to be a campus ambassador.', ''];
+    Object.entries(labels).forEach(([key, label]) => {
+      const value = String(data.get(key) || '').trim();
+      if (value) lines.push(`${label}: ${value}`);
+    });
+
+    const url = 'https://wa.me/2349043606531?text=' + encodeURIComponent(lines.join('\n'));
+    window.open(url, '_blank', 'noopener');
+  });
+})();
