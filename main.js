@@ -233,12 +233,13 @@ document.querySelectorAll('[data-register]').forEach((link) => {
   }
 });
 
-// Post-event sections on the Programs page. They ship hidden; set a flag to
-// true to show that section (results after judging, gallery once photos are in).
+// Sections on the Programs page that ship hidden; set a flag to true to show
+// that section (judges once photos are in, results after judging, gallery once photos are in).
+const SHOW_JUDGES = false;
 const SHOW_RESULTS = false;
 const SHOW_GALLERY = false;
 (function () {
-  const flags = { results: SHOW_RESULTS, gallery: SHOW_GALLERY };
+  const flags = { judges: SHOW_JUDGES, results: SHOW_RESULTS, gallery: SHOW_GALLERY };
   document.querySelectorAll('[data-flag]').forEach((el) => {
     if (flags[el.dataset.flag]) el.hidden = false;
   });
