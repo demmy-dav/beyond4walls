@@ -344,6 +344,57 @@
       </div>
     </section>
 
+    <!-- HACKATHON RESULTS: hidden until SHOW_RESULTS is true in main.js -->
+    <section id="results" class="tp-results" aria-labelledby="results-title" data-flag="results" hidden>
+      <div class="container">
+        <p class="tp-eyebrow tp-eyebrow--orange">From Access to Agency · Results</p>
+        <h2 id="results-title" class="tp-title">Hackathon Winners</h2>
+        <!-- TODO: confirm prize categories beyond the grand prize, then fill in after judging: team name, project name, one-line summary, optional project link -->
+        <ol class="tp-results__list">
+          <li class="tp-results__item tp-results__item--grand">
+            <span class="tp-results__place">Grand Prize · ₦500,000</span>
+            <h3 class="tp-results__team">Team name</h3>
+            <p>Project name and a one-line summary.</p>
+          </li>
+          <li class="tp-results__item">
+            <span class="tp-results__place">Prize category</span>
+            <h3 class="tp-results__team">Team name</h3>
+            <p>Project name and a one-line summary.</p>
+          </li>
+          <li class="tp-results__item">
+            <span class="tp-results__place">Prize category</span>
+            <h3 class="tp-results__team">Team name</h3>
+            <p>Project name and a one-line summary.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TINC26 + HACKATHON GALLERY: hidden until SHOW_GALLERY is true in main.js -->
+    <section id="tinc26-gallery" class="tp-past" aria-labelledby="tinc26-gallery-title" data-flag="gallery" hidden>
+      <div class="container">
+        <header class="tp-past__head">
+          <div>
+            <p class="tp-eyebrow">16 October 2026</p>
+            <h2 id="tinc26-gallery-title" class="tp-title">TINC26 in Pictures</h2>
+          </div>
+          <p class="tp-lede">Scenes from The Idea Nexus Conference 2026 and the From Access to Agency hackathon.</p>
+        </header>
+        <!-- TODO: replace each placeholder figure with a photo, following the gallery pattern above, e.g.
+             <img src="assets/tinc26/group.jpg" srcset="assets/tinc26/group-sm.jpg 800w, assets/tinc26/group.jpg 1600w"
+                  sizes="(max-width: 700px) 100vw, 50vw" alt="Describe who is in the photo and what they're doing"
+                  width="1600" height="1067" loading="lazy">
+             Every photo needs its own descriptive alt text. -->
+        <div class="gallery">
+          <figure class="gallery__photo gallery__photo--lead"></figure>
+          <figure class="gallery__photo"></figure>
+          <figure class="gallery__photo"></figure>
+          <figure class="gallery__photo"></figure>
+          <figure class="gallery__photo"></figure>
+        </div>
+      </div>
+    </section>
+
     <!-- PAST PROGRAM: METAMORPHOSIS -->
     <section id="metamorphosis" class="tp-past" aria-labelledby="meta-title">
       <div class="container">

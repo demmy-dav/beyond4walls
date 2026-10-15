@@ -233,6 +233,17 @@ document.querySelectorAll('[data-register]').forEach((link) => {
   }
 });
 
+// Post-event sections on the Programs page. They ship hidden; set a flag to
+// true to show that section (results after judging, gallery once photos are in).
+const SHOW_RESULTS = false;
+const SHOW_GALLERY = false;
+(function () {
+  const flags = { results: SHOW_RESULTS, gallery: SHOW_GALLERY };
+  document.querySelectorAll('[data-flag]').forEach((el) => {
+    if (flags[el.dataset.flag]) el.hidden = false;
+  });
+})();
+
 // Hackathon submission countdown. The HTML holds the plain deadline as the
 // no-JS fallback. Once the deadline passes, [data-when-open] elements (e.g.
 // the submit buttons) are hidden and [data-when-closed] ones are shown.

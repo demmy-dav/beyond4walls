@@ -318,6 +318,14 @@ p { margin: 0; }
   padding: clamp(24px, 3.4vw, 40px) clamp(20px, 3.4vw, 44px);
 }
 .stat + .stat { border-left: 1px solid var(--line); }
+.impact__note {
+  padding: 12px clamp(20px, 3.4vw, 44px);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
 
 .stat__icon {
   grid-area: icon;
@@ -1543,6 +1551,31 @@ p { margin: 0; }
 
 /* Hackathon -------------------------------------------------------------- */
 .tp-hack { padding-block: var(--section-y); }
+
+/* Programs: hackathon results (behind SHOW_RESULTS in main.js) ------------ */
+.tp-results { padding-block: var(--section-y); border-top: 1px solid var(--tinc-border); }
+.tp-results__list {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tp-results__item {
+  padding: 24px;
+  border: 1px solid var(--tinc-border);
+  border-radius: 20px;
+  background: var(--tinc-surface);
+  line-height: 1.6;
+}
+.tp-results__item--grand { border-color: rgba(241, 97, 34, .4); background: rgba(241, 97, 34, .08); }
+.tp-results__place { color: var(--tinc-orange); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+.tp-results__team { margin: 8px 0 6px; color: #fff; font-size: 22px; font-weight: 700; }
+
+@media (max-width: 860px) {
+  .tp-results__list { grid-template-columns: 1fr; }
+}
 
 /* Programs: past program (Metamorphosis) ---------------------------------- */
 .tp-past { padding-block: var(--section-y); background: var(--tinc-surface); border-top: 1px solid var(--tinc-border); }
