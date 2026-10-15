@@ -1747,6 +1747,7 @@ p { margin: 0; }
 }
 .tp-sponsor__label { grid-column: 1 / -1; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
 .tp-sponsor__name { color: #fff; font-size: clamp(24px, 3vw, 30px); font-weight: 800; letter-spacing: -0.02em; }
+.tp-sponsor__name img { width: 160px; height: auto; border-radius: 10px; }
 .tp-sponsor__line { line-height: 1.6; }
 
 @media (max-width: 700px) {
