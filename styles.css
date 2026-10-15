@@ -1032,6 +1032,18 @@ p { margin: 0; }
 .mv { position: relative; z-index: 2; margin-top: -80px; padding-bottom: var(--section-y); }
 .mv__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
+/* About: showreel video */
+.showreel { padding-bottom: var(--section-y); }
+.showreel__video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin-top: 28px;
+  border-radius: var(--radius);
+  background: #0E2416;
+}
+
 .statement {
   padding: 36px 40px;
   border-radius: var(--radius);

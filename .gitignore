@@ -1,2 +1,6 @@
 # Raw TINC25 photo export (1.7 GB); resized picks live in assets/tinc25/
 assets/TINC25'/
+
+# Raw source files; web-ready copies live in assets/judges/ and assets/showreel/
+assets/Hackathon Judges/
+assets/For about page/
