@@ -53,6 +53,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+[hidden] { display: none !important; }
+
 img, svg { display: block; max-width: 100%; }
 img { height: auto; }
 
@@ -1071,6 +1073,46 @@ p { margin: 0; }
 .tp-btn--lg { padding: 17px 32px; font-size: 16px; }
 .tp-btn--block { width: 100%; }
 
+/* Hackathon live banner (home + programs) -------------------------------- */
+.live-bar {
+  background: var(--tinc-bg);
+  color: var(--tinc-muted);
+  border-bottom: 3px solid var(--tinc-orange);
+}
+.live-bar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 24px;
+  padding-block: 14px;
+}
+.live-bar__status { display: flex; align-items: center; gap: 10px; color: #fff; font-family: var(--font-head); font-weight: 700; }
+.live-bar__dot {
+  flex: none;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--tinc-red);
+  box-shadow: 0 0 0 0 rgba(242, 0, 4, .6);
+  animation: live-pulse 1.8s ease-out infinite;
+}
+.live-bar.is-closed .live-bar__dot { background: var(--tinc-muted); animation: none; }
+@keyframes live-pulse {
+  70% { box-shadow: 0 0 0 10px rgba(242, 0, 4, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(242, 0, 4, 0); }
+}
+.live-bar__countdown { font-size: 14.5px; }
+.live-bar .tp-btn { margin-left: auto; padding: 10px 20px; font-size: 14px; }
+
+/* Countdown text: tabular figures so the digits don't jitter */
+.countdown strong { color: #fff; font-family: var(--font-head); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 600px) {
+  .live-bar .tp-btn { width: 100%; margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-bar__dot { animation: none; }
+}
+
 /* Home: TINC26 promo ----------------------------------------------------- */
 .tinc-promo {
   background: var(--tinc-bg);
@@ -1105,6 +1147,7 @@ p { margin: 0; }
   font-size: 13.5px;
   font-weight: 600;
 }
+.tinc-promo__countdown { margin: -14px 0 24px; font-size: 15px; }
 .tinc-promo__actions { display: flex; flex-wrap: wrap; gap: 14px; }
 .tinc-promo__photo { display: block; overflow: hidden; border-radius: 20px; border: 1px solid var(--tinc-border); }
 .tinc-promo__photo img { width: 100%; transition: transform .6s ease; }

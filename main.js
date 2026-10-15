@@ -233,6 +233,50 @@ document.querySelectorAll('[data-register]').forEach((link) => {
   }
 });
 
+// Hackathon submission countdown. The HTML holds the plain deadline as the
+// no-JS fallback. Once the deadline passes, [data-when-open] elements (e.g.
+// the submit buttons) are hidden and [data-when-closed] ones are shown.
+(function () {
+  const timers = document.querySelectorAll('[data-countdown]');
+  if (!timers.length) return;
+  const deadline = new Date(timers[0].dataset.countdown).getTime();
+  // Reduced motion: drop the ticking seconds, show minutes only
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pad = (n) => String(n).padStart(2, '0');
+
+  function format(ms) {
+    const s = Math.floor(ms / 1000);
+    const parts = [];
+    const days = Math.floor(s / 86400);
+    if (days) parts.push(`${days}d`);
+    parts.push(`${pad(Math.floor((s % 86400) / 3600))}h`, `${pad(Math.floor((s % 3600) / 60))}m`);
+    if (!reduce) parts.push(`${pad(s % 60)}s`);
+    return parts.join(' ');
+  }
+
+  let interval;
+  function update() {
+    const left = deadline - Date.now();
+    const closed = left <= 0;
+    timers.forEach((el) => {
+      if (closed) {
+        el.textContent = 'Submissions closed';
+      } else {
+        const time = document.createElement('strong');
+        time.textContent = format(left);
+        el.replaceChildren('Submissions close in ', time);
+      }
+    });
+    document.querySelectorAll('[data-when-open]').forEach((el) => { el.hidden = closed; });
+    document.querySelectorAll('[data-when-closed]').forEach((el) => { el.hidden = !closed; });
+    document.querySelectorAll('.live-bar').forEach((el) => el.classList.toggle('is-closed', closed));
+    if (closed) clearInterval(interval);
+  }
+
+  update();
+  interval = setInterval(update, 1000);
+})();
+
 // Forms (contact, campus ambassadors). The site has no backend, so submissions
 // go through FormSubmit, which emails them to our inbox. Each form's plain
 // action attribute is the no-JS fallback.
