@@ -48,7 +48,7 @@
       <div class="container page-hero__inner">
         <p class="eyebrow eyebrow--orange">Contact</p>
         <h1 id="contact-title" class="page-hero__title">Let's talk</h1>
-        <p class="page-hero__lede">Partnering, sponsoring TINC26, joining the team, or just curious? Tell us what's on your mind and we'll get back to you. You can also email us directly at <a class="text-link" href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>.</p>
+        <p class="page-hero__lede">Partnering, sponsoring TINC26, joining the team, or just curious? Tell us what's on your mind and we'll get back to you. You can also email us directly at <a class="text-link" href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>, or <a class="text-link" href="mailto:partnerships@beyond4wallsed.org">partnerships@beyond4wallsed.org</a> for partnerships and sponsorship.</p>
       </div>
     </section>
 
@@ -65,8 +65,9 @@
             <legend class="part-head"><span class="part-head__num">01</span> What would you like to talk about?</legend>
             <div class="choice choice--topics">
               <div class="choice__row">
-                <label class="pill"><input type="radio" name="topic" value="Partnership" data-topic="partner" required><span>Partnership</span></label>
-                <label class="pill"><input type="radio" name="topic" value="Sponsoring TINC26" data-topic="sponsor"><span>Sponsoring TINC26</span></label>
+                <!-- data-inbox routes that topic to another address; topics without it go to hello@ -->
+                <label class="pill"><input type="radio" name="topic" value="Partnership" data-topic="partner" data-inbox="partnerships@beyond4wallsed.org" required><span>Partnership</span></label>
+                <label class="pill"><input type="radio" name="topic" value="Sponsoring TINC26" data-topic="sponsor" data-inbox="partnerships@beyond4wallsed.org"><span>Sponsoring TINC26</span></label>
                 <label class="pill"><input type="radio" name="topic" value="Getting involved" data-topic="involved"><span>Getting involved</span></label>
                 <label class="pill"><input type="radio" name="topic" value="Programs and events" data-topic="programs"><span>Programs and events</span></label>
                 <label class="pill"><input type="radio" name="topic" value="Media and press" data-topic="media"><span>Media and press</span></label>

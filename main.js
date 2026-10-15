@@ -293,7 +293,6 @@ const SHOW_GALLERY = false;
 // go through FormSubmit, which emails them to our inbox. Each form's plain
 // action attribute is the no-JS fallback.
 const formKit = (function () {
-  const INBOX = 'https://formsubmit.co/ajax/hello@beyond4wallsed.org';
   const EMAIL = 'hello@beyond4wallsed.org';
   const WHATSAPP = 'https://wa.me/2349043606531?text=' +
     encodeURIComponent('Hi Beyond 4walls, I tried to send a message on your website but it didn’t go through.');
@@ -348,8 +347,8 @@ const formKit = (function () {
     });
   }
 
-  // Validates, sends `payload()` to the inbox, then swaps the form for a thank-you note
-  function handleSubmit(form, { payload, thanks }) {
+  // Validates, sends `payload()` to `inbox()` (hello@ by default), then swaps the form for a thank-you note
+  function handleSubmit(form, { payload, thanks, inbox = () => EMAIL }) {
     const error = form.querySelector('.apply__error');
     const status = form.querySelector('.apply__status');
     const button = form.querySelector('[type="submit"]');
@@ -370,7 +369,7 @@ const formKit = (function () {
       button.textContent = 'Sending…';
       status.textContent = '';
       try {
-        const res = await fetch(INBOX, {
+        const res = await fetch(`https://formsubmit.co/ajax/${inbox()}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
@@ -414,6 +413,11 @@ const formKit = (function () {
   if (preset) preset.checked = true;
 
   formKit.handleSubmit(form, {
+    // Partnership and sponsorship topics name their own inbox in contact.html
+    inbox: () => {
+      const picked = form.querySelector('input[name="topic"]:checked');
+      return (picked && picked.dataset.inbox) || 'hello@beyond4wallsed.org';
+    },
     payload: (data) => ({
       _subject: `Website message: ${data.get('topic')} (from ${data.get('name')})`,
       _replyto: data.get('email'),
