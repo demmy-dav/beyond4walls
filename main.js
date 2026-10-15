@@ -235,7 +235,7 @@ document.querySelectorAll('[data-register]').forEach((link) => {
 
 // Sections on the Programs page that ship hidden; set a flag to true to show
 // that section (judges once photos are in, results after judging, gallery once photos are in).
-const SHOW_JUDGES = false;
+const SHOW_JUDGES = true;
 const SHOW_RESULTS = false;
 const SHOW_GALLERY = false;
 (function () {

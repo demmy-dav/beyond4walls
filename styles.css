@@ -1556,13 +1556,15 @@ p { margin: 0; }
 .tp-judges { padding-block: var(--section-y); border-top: 1px solid var(--tinc-border); }
 .tp-judges__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 16px;
   margin: 32px 0 0;
   padding: 0;
   list-style: none;
 }
 .tp-judges__grid .speaker { width: auto; }
+.speaker__bio { margin-top: 14px; font-size: 14px; line-height: 1.65; }
+.speaker__bio p + p { margin-top: 10px; }
 
 /* Programs: hackathon results (behind SHOW_RESULTS in main.js) ------------ */
 .tp-results { padding-block: var(--section-y); border-top: 1px solid var(--tinc-border); }
