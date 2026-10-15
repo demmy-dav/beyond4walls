@@ -1552,6 +1552,18 @@ p { margin: 0; }
 /* Hackathon -------------------------------------------------------------- */
 .tp-hack { padding-block: var(--section-y); }
 
+/* Programs: hackathon judges (reuses the speaker cards) ------------------- */
+.tp-judges { padding-block: var(--section-y); border-top: 1px solid var(--tinc-border); }
+.tp-judges__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tp-judges__grid .speaker { width: auto; }
+
 /* Programs: hackathon results (behind SHOW_RESULTS in main.js) ------------ */
 .tp-results { padding-block: var(--section-y); border-top: 1px solid var(--tinc-border); }
 .tp-results__list {
