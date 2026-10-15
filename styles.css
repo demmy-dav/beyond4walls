@@ -1723,6 +1723,7 @@ p { margin: 0; }
 .tp-timeline__what { font-size: 15px; }
 
 .tp-rules__title { margin-top: 32px; }
+.tp-rules__handbook { margin-top: 18px; }
 .tp-rules { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .tp-rules li { position: relative; padding-left: 22px; font-size: 15px; line-height: 1.6; }
 .tp-rules li::before {
