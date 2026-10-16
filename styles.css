@@ -880,6 +880,39 @@ p { margin: 0; }
   .sdgs__closing .btn { width: 100%; }
 }
 
+/* Home: TINC26 thank you ------------------------------------------------- */
+.thanks { padding-top: clamp(48px, 7vw, 80px); }
+.thanks__card {
+  max-width: 860px;
+  margin-inline: auto;
+  padding: clamp(32px, 5vw, 56px) clamp(24px, 5vw, 64px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--bg-hero);
+  text-align: center;
+}
+.thanks__stripes { display: flex; justify-content: center; gap: 6px; margin-bottom: 24px; }
+.thanks__stripes span { width: 40px; height: 6px; border-radius: 3px; }
+.thanks__stripes span:nth-child(1) { background: var(--green); }
+.thanks__stripes span:nth-child(2) { background: var(--sky); }
+.thanks__stripes span:nth-child(3) { background: var(--orange); }
+.thanks__title { margin: 14px auto 16px; max-width: 18ch; color: #0E2814; }
+.thanks__body { max-width: 62ch; margin-inline: auto; }
+.thanks__note { margin-top: 16px; color: var(--ink); font-weight: 600; }
+.thanks__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+@media (max-width: 480px) {
+  .thanks .eyebrow { font-size: 12px; letter-spacing: 1.5px; }
+  .thanks__actions { flex-direction: column; }
+  .thanks__actions .btn { width: 100%; }
+}
+
 /* Home: about teaser ----------------------------------------------------- */
 .about-teaser__inner {
   display: grid;
