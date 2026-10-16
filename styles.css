@@ -881,14 +881,15 @@ p { margin: 0; }
 }
 
 /* Home: TINC26 thank you ------------------------------------------------- */
-.thanks { padding-top: clamp(48px, 7vw, 80px); }
+/* Sits above the hero, so it shares the hero background */
+.thanks { padding-top: clamp(32px, 5vw, 56px); background: var(--bg-hero); }
 .thanks__card {
   max-width: 860px;
   margin-inline: auto;
   padding: clamp(32px, 5vw, 56px) clamp(24px, 5vw, 64px);
   border: 1px solid var(--line);
   border-radius: 20px;
-  background: var(--bg-hero);
+  background: #fff;
   text-align: center;
 }
 .thanks__stripes { display: flex; justify-content: center; gap: 6px; margin-bottom: 24px; }
