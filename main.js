@@ -227,12 +227,10 @@
 })();
 
 // Sections on the Programs page that ship hidden; set a flag to true to show
-// that section (judges once photos are in, results after judging, gallery once photos are in).
-const SHOW_JUDGES = true;
-const SHOW_RESULTS = false;
+// that section (gallery once photos are in).
 const SHOW_GALLERY = false;
 (function () {
-  const flags = { judges: SHOW_JUDGES, results: SHOW_RESULTS, gallery: SHOW_GALLERY };
+  const flags = { gallery: SHOW_GALLERY };
   document.querySelectorAll('[data-flag]').forEach((el) => {
     if (flags[el.dataset.flag]) el.hidden = false;
   });
