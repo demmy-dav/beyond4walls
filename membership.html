@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Become a Member — Beyond 4walls</title>
+  <meta name="description" content="Beyond4walls is evolving into something bigger. Become a member and be part of it.">
+  <meta name="theme-color" content="#228B22">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:title" content="Become a Member of Beyond 4walls">
+  <meta property="og:description" content="Bridging the gap between the classroom and the real world.">
+  <meta property="og:image" content="assets/logo-b4w-black.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAV -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="nav__brand" aria-label="Beyond 4walls home">
+        <img src="assets/logo-b4w-black.png" alt="Beyond 4walls" width="95" height="40">
+      </a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        <span class="visually-hidden">Menu</span>
+        <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <nav id="nav-menu" class="nav__menu" aria-label="Primary">
+        <a href="/about" class="nav__link">About</a>
+        <a href="/programs" class="nav__link">Programs</a>
+        <a href="/contact" class="nav__link">Contact</a>
+        <a href="/membership" class="nav__link" aria-current="page">Become a Member</a>
+        <a href="/ambassadors" class="btn btn--primary btn--sm">Apply as a campus ambassador</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero" aria-labelledby="membership-title">
+      <div class="container page-hero__inner">
+        <p class="eyebrow eyebrow--orange">A new chapter</p>
+        <h1 id="membership-title" class="page-hero__title">Become a Member</h1>
+        <p class="page-hero__lede">Beyond4walls is evolving into something bigger. We are reforming, growing our structure, our programs and our reach, so we can serve more people and communities. This is the right time to be part of it.</p>
+      </div>
+    </section>
+
+    <section class="apply" aria-labelledby="membership-form-title">
+      <div class="container">
+        <form class="apply__card" id="membership-form" action="https://formsubmit.co/hello@beyond4wallsed.org" method="POST" novalidate>
+          <h2 id="membership-form-title" class="visually-hidden">Membership form</h2>
+          <input type="hidden" name="_subject" value="New membership request from the Beyond 4walls website">
+          <input type="hidden" name="_template" value="table">
+          <!-- Spam trap: real visitors never see or fill this -->
+          <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">01</span> About you</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="member-name">Full name</label>
+                <input id="member-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="member-email">Email</label>
+                <input id="member-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="member-phone">Phone or WhatsApp <span class="field__optional">(optional)</span></label>
+                <input id="member-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel">
+              </div>
+              <div class="field">
+                <label for="member-location">City and state</label>
+                <input id="member-location" name="location" type="text" autocomplete="address-level2" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">02</span> Which best describes you?</legend>
+            <div class="choice">
+              <div class="choice__row">
+                <label class="pill"><input type="radio" name="role" value="Student" required><span>Student</span></label>
+                <label class="pill"><input type="radio" name="role" value="Graduate"><span>Graduate</span></label>
+                <label class="pill"><input type="radio" name="role" value="Educator"><span>Educator</span></label>
+                <label class="pill"><input type="radio" name="role" value="Working professional"><span>Working professional</span></label>
+                <label class="pill"><input type="radio" name="role" value="Other"><span>Other</span></label>
+              </div>
+            </div>
+            <div class="field-grid membership-follow">
+              <div class="field field--full">
+                <label for="member-org">School, organization or workplace <span class="field__optional">(optional)</span></label>
+                <input id="member-org" name="organization" type="text" autocomplete="organization">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">03</span> Why Beyond4walls?</legend>
+            <div class="field field--full">
+              <label for="member-why">Why would you like to become a member?</label>
+              <textarea id="member-why" name="why" rows="5" maxlength="1500" required></textarea>
+            </div>
+            <div class="field field--full membership-follow">
+              <label for="member-heard">How did you hear about us? <span class="field__optional">(optional)</span></label>
+              <input id="member-heard" name="heard" type="text">
+            </div>
+          </fieldset>
+
+          <div class="apply__foot">
+            <p class="apply__error" role="alert" hidden>Please fill in all the required fields.</p>
+            <p class="apply__status" role="status"></p>
+            <button type="submit" class="btn btn--primary apply__submit">Become a Member</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="assets/logo-b4w-white.png" alt="Beyond 4walls" width="117" height="60" loading="lazy">
+          <p>A group of young change-makers bridging the gap between the classroom and the real world.</p>
+        </div>
+        <nav class="footer__col" aria-label="Explore">
+          <h3 class="footer__heading">Explore</h3>
+          <a href="/about">About</a>
+          <a href="/programs">Programs</a>
+          <a href="/membership">Become a Member</a>
+          <a href="/ambassadors">Campus Ambassadors</a>
+        </nav>
+        <div class="footer__col">
+          <h3 class="footer__heading">Contact</h3>
+          <a href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>
+          <a href="/contact">Send us a message</a>
+          <a href="/contact?topic=partner">Partner with us</a>
+        </div>
+        <div class="footer__col">
+          <h3 class="footer__heading">Follow</h3>
+          <div class="socials">
+            <a href="https://www.instagram.com/b4w___/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/beyond4walls-education-awareness-initiative/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10.5V16.5M12 16.5V10.5M12 13.25c0-1.6 1-2.75 2.5-2.75S16.5 11.5 16.5 13v3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="7.5" r="1.2" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="footer__legal">© 2026 Beyond 4walls. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

@@ -382,6 +382,31 @@ const formKit = (function () {
   });
 })();
 
+// Membership form
+(function () {
+  const form = document.getElementById('membership-form');
+  if (!form) return;
+
+  formKit.handleSubmit(form, {
+    payload: (data) => ({
+      _subject: `Membership request: ${data.get('name')} (${data.get('role')})`,
+      _replyto: data.get('email'),
+      Name: data.get('name'),
+      Email: data.get('email'),
+      'Phone or WhatsApp': data.get('phone') || '-',
+      'City and state': data.get('location'),
+      'Describes them': data.get('role'),
+      'School, organization or workplace': data.get('organization') || '-',
+      'Why they want to join': data.get('why'),
+      'Heard about us': data.get('heard') || '-',
+    }),
+    thanks: {
+      title: 'Welcome aboard. Thank you!',
+      body: 'We’ve received your membership request and will be in touch by email.',
+    },
+  });
+})();
+
 // Campus ambassador application
 (function () {
   const form = document.getElementById('ambassador-form');

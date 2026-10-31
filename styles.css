@@ -1860,7 +1860,7 @@ p { margin: 0; }
 /* Contact form */
 .text-link { color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .text-link:hover { color: var(--green-dark); }
-.contact-message { margin-top: 28px; }
+.contact-message, .membership-follow { margin-top: 28px; }
 
 /* Thank-you note that replaces a form once it's sent */
 .sent { padding-block: clamp(24px, 6vw, 56px); text-align: center; animation: flow-in .5s cubic-bezier(.2, .8, .2, 1) both; }
