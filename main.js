@@ -236,7 +236,7 @@ const SHOW_GALLERY = false;
   });
 })();
 
-// Forms (contact, campus ambassadors). The site has no backend, so submissions
+// Forms (contact, campus ambassadors, volunteers). The site has no backend, so submissions
 // go through FormSubmit, which emails them to our inbox. Each form's plain
 // action attribute is the no-JS fallback.
 const formKit = (function () {
@@ -273,10 +273,10 @@ const formKit = (function () {
     target.setAttribute('aria-invalid', String(!valid));
   }
 
-  // Marks every required field and returns the first invalid one, if any
-  function validate(form) {
+  // Marks every required field in `scope` (the whole form by default) and returns the first invalid one, if any
+  function validate(form, scope = form) {
     let firstInvalid = null;
-    form.querySelectorAll('[required], input[type="radio"]').forEach((field) => {
+    scope.querySelectorAll('[required], input[type="radio"]').forEach((field) => {
       const valid = isValid(form, field);
       markField(field, valid);
       if (!valid && !firstInvalid) firstInvalid = field;
@@ -294,8 +294,9 @@ const formKit = (function () {
     });
   }
 
-  // Validates, sends `payload()` to `inbox()` (hello@ by default), then swaps the form for a thank-you note
-  function handleSubmit(form, { payload, thanks, inbox = () => EMAIL }) {
+  // Validates, sends `payload()` to `inbox()` (hello@ by default), then swaps the form for a thank-you note.
+  // `onInvalid` runs before focusing the first invalid field; `onSent` runs once the note is showing.
+  function handleSubmit(form, { payload, thanks, inbox = () => EMAIL, onInvalid = () => {}, onSent = () => {} }) {
     const error = form.querySelector('.apply__error');
     const status = form.querySelector('.apply__status');
     const button = form.querySelector('[type="submit"]');
@@ -308,6 +309,7 @@ const formKit = (function () {
       error.hidden = !firstInvalid;
       if (firstInvalid) {
         status.textContent = '';
+        onInvalid(firstInvalid);
         firstInvalid.focus();
         return;
       }
@@ -337,6 +339,7 @@ const formKit = (function () {
         form.replaceChildren(done);
         done.querySelector('.sent__title').focus();
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        onSent();
       } catch (err) {
         console.error('Form submission failed:', err);
         showFailure(status);
@@ -346,7 +349,7 @@ const formKit = (function () {
     });
   }
 
-  return { handleSubmit };
+  return { handleSubmit, validate };
 })();
 
 // Contact form
@@ -382,62 +385,77 @@ const formKit = (function () {
   });
 })();
 
+// G.R.I.T. question cards (campus ambassadors, volunteers): each big letter and its meter
+// tile fill as the answer grows. `progress(key, textarea)` returns 0 to 1; `counter`, if
+// given, returns the text shown under each answer.
+const gritKit = (function () {
+  function setup(form, { progress, counter }) {
+    const meter = form.querySelector('.grit-meter');
+    const cards = Array.from(form.querySelectorAll('[data-grit]'));
+
+    function updateCard(card) {
+      const key = card.dataset.grit;
+      const textarea = card.querySelector('textarea');
+      const p = progress(key, textarea);
+
+      const tile = meter.querySelector(`[data-meter="${key}"]`);
+      [card, tile].forEach((el) => {
+        el.style.setProperty('--p', p);
+        el.classList.toggle('is-full', p === 1);
+      });
+      if (counter) card.querySelector('.counter').textContent = counter(textarea);
+      meter.classList.toggle('is-complete', cards.every((c) => c.classList.contains('is-full')));
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener('input', () => updateCard(card));
+      card.addEventListener('change', () => updateCard(card));
+      updateCard(card);
+    });
+
+    // Meter letters jump to their question
+    meter.querySelectorAll('[data-meter]').forEach((tile) => {
+      tile.addEventListener('click', (e) => {
+        e.preventDefault();
+        const textarea = document.getElementById(`grit-${tile.dataset.meter}`).querySelector('textarea');
+        textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        textarea.focus({ preventScroll: true });
+      });
+    });
+
+    // Cards rise in as they scroll into view
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.15 });
+      cards.forEach((card) => observer.observe(card));
+    } else {
+      cards.forEach((card) => card.classList.add('is-visible'));
+    }
+  }
+
+  return { setup };
+})();
+
 // Campus ambassador application
 (function () {
   const form = document.getElementById('ambassador-form');
   if (!form) return;
-  const meter = form.querySelector('.grit-meter');
 
   // G.R.I.T. letters fill as each answer grows; this many characters reads as a solid answer
   const SOLID = 200;
-  const cards = Array.from(form.querySelectorAll('[data-grit]'));
-
-  function updateCard(card) {
-    const key = card.dataset.grit;
-    const textarea = card.querySelector('textarea');
-    const len = textarea.value.trim().length;
-    let p = Math.min(len / SOLID, 1);
-    // Innovative also needs a pillar picked before it counts as full
-    if (key === 'i' && !form.querySelector('input[name="pillar"]:checked')) p = Math.min(p, 0.9);
-
-    const tile = meter.querySelector(`[data-meter="${key}"]`);
-    [card, tile].forEach((el) => {
-      el.style.setProperty('--p', p);
-      el.classList.toggle('is-full', p === 1);
-    });
-    card.querySelector('.counter').textContent = `${textarea.value.length} / ${textarea.maxLength}`;
-    meter.classList.toggle('is-complete', cards.every((c) => c.classList.contains('is-full')));
-  }
-
-  cards.forEach((card) => {
-    card.addEventListener('input', () => updateCard(card));
-    card.addEventListener('change', () => updateCard(card));
-    updateCard(card);
+  gritKit.setup(form, {
+    progress: (key, textarea) => {
+      const p = Math.min(textarea.value.trim().length / SOLID, 1);
+      // Innovative also needs a pillar picked before it counts as full
+      return key === 'i' && !form.querySelector('input[name="pillar"]:checked') ? Math.min(p, 0.9) : p;
+    },
+    counter: (textarea) => `${textarea.value.length} / ${textarea.maxLength}`,
   });
-
-  // Meter letters jump to their question
-  meter.querySelectorAll('[data-meter]').forEach((tile) => {
-    tile.addEventListener('click', (e) => {
-      e.preventDefault();
-      const textarea = document.getElementById(`grit-${tile.dataset.meter}`).querySelector('textarea');
-      textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      textarea.focus({ preventScroll: true });
-    });
-  });
-
-  // Cards rise in as they scroll into view
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.15 });
-    cards.forEach((card) => observer.observe(card));
-  } else {
-    cards.forEach((card) => card.classList.add('is-visible'));
-  }
 
   // Email layout, in the same order as the form
   const fields = [
@@ -474,5 +492,226 @@ const formKit = (function () {
       title: 'Application received. Thank you!',
       body: 'Your G.R.I.T. is on its way to our team. We’ll review every application and be in touch.',
     },
+  });
+})();
+
+// Volunteer application: four steps (role, commitment, G.R.I.T., about you), saved on this
+// device as the applicant goes, with an application ID to quote in every email about it.
+// Without JS every step shows at once and the form posts straight to FormSubmit.
+(function () {
+  const form = document.getElementById('volunteer-form');
+  if (!form) return;
+
+  const WORD_LIMIT = 150;
+  // A G.R.I.T. letter reads as full at this many words
+  const SOLID_WORDS = 50;
+  const DRAFT_KEY = 'b4w-volunteer-draft';
+
+  const steps = Array.from(form.querySelectorAll('.apply__part[data-step]'));
+  const stepper = form.querySelector('.stepper');
+  const error = form.querySelector('.apply__error');
+  const errorText = error.textContent;
+  const back = form.querySelector('[data-back]');
+  const next = form.querySelector('[data-next]');
+  const submit = form.querySelector('[type="submit"]');
+  const roles = Array.from(form.querySelectorAll('input[name="role"]'));
+  const second = form.elements.secondRole;
+  const roleQuestion = form.querySelector('[data-role-question]');
+  let current = 0;
+
+  const countWords = (text) => (text.match(/\S+/g) || []).length;
+
+  // Storage can be blocked (private windows, strict settings); the form works without it
+  const draft = {
+    load() { try { return JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch (e) { return null; } },
+    save(data) { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch (e) { /* not saved */ } },
+    clear() { try { localStorage.removeItem(DRAFT_KEY); } catch (e) { /* nothing to clear */ } },
+  };
+
+  // e.g. B4W-V-261031-7K3Q: the date plus four random characters (no 0/O or 1/I to misread)
+  function newApplicationId() {
+    const d = new Date();
+    const date = [d.getFullYear() % 100, d.getMonth() + 1, d.getDate()].map((n) => String(n).padStart(2, '0')).join('');
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const rand = Array.from(crypto.getRandomValues(new Uint8Array(4)), (b) => chars[b % chars.length]).join('');
+    return `B4W-V-${date}-${rand}`;
+  }
+
+  // Roles marked data-status="closed" stay on show but can't be a first or second choice
+  const closed = new Set();
+  roles.forEach((input) => {
+    const card = input.closest('.role-option');
+    if (card.dataset.status !== 'closed') return;
+    input.disabled = true;
+    card.querySelector('.role-option__status').textContent = 'Closed';
+    closed.add(input.value);
+  });
+
+  function syncRole() {
+    let picked = roles.find((input) => input.checked);
+    if (picked && picked.disabled) { picked.checked = false; picked = null; }
+
+    // The second choice can't repeat the first
+    Array.from(second.options).forEach((option) => {
+      option.disabled = option.value !== '' && (closed.has(option.value) || (!!picked && option.value === picked.value));
+    });
+    if (second.selectedOptions[0].disabled) second.value = '';
+
+    // Some roles carry an extra question from their Lead
+    const question = (picked && picked.dataset.question) || '';
+    roleQuestion.hidden = !question;
+    roleQuestion.querySelector('textarea').required = !!question;
+    form.elements.roleQuestion.value = question;
+    if (question) {
+      roleQuestion.querySelector('[data-role-name]').textContent = picked.value;
+      roleQuestion.querySelector('[data-role-text]').textContent = question;
+    }
+  }
+
+  // 150-word limit, with a live count under every long answer
+  function updateCount(textarea) {
+    const words = countWords(textarea.value);
+    const over = words > WORD_LIMIT;
+    textarea.setCustomValidity(over ? `Please keep each answer to ${WORD_LIMIT} words or fewer.` : '');
+    const counter = document.getElementById(textarea.getAttribute('aria-describedby'));
+    counter.textContent = over ? `${words} / ${WORD_LIMIT} words. Please trim it down.` : `${words} / ${WORD_LIMIT} words`;
+    counter.classList.toggle('is-over', over);
+  }
+
+  // Filled-in fields that still fail (too many words, a past start date, a mistyped email)
+  // get the browser's specific message; empty ones get the general one
+  function messageFor(field) {
+    const filled = field.type !== 'radio' && field.type !== 'checkbox' && field.value.trim() !== '';
+    return (filled && field.validationMessage) || errorText;
+  }
+
+  function save() {
+    const fields = {};
+    new FormData(form).forEach((value, key) => {
+      if (!key.startsWith('_')) fields[key] = value;
+    });
+    draft.save({ fields, step: current });
+  }
+
+  function restore(saved) {
+    Object.entries(saved.fields || {}).forEach(([key, value]) => {
+      const field = form.elements[key];
+      if (!field) return;
+      if (field.type === 'checkbox') field.checked = true;
+      else field.value = value; // on a radio group this checks the matching option
+    });
+  }
+
+  function showStep(i, focus) {
+    current = i;
+    steps.forEach((step, n) => step.classList.toggle('is-current', n === i));
+    stepper.querySelector('[data-step-num]').textContent = i + 1;
+    stepper.querySelector('[data-step-name]').textContent = steps[i].dataset.step;
+    stepper.querySelectorAll('.stepper__bar span').forEach((bar, n) => bar.classList.toggle('is-done', n <= i));
+    back.hidden = i === 0;
+    next.hidden = i === steps.length - 1;
+    submit.hidden = i !== steps.length - 1;
+    if (focus) {
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      steps[i].querySelector('legend').focus({ preventScroll: true });
+    }
+    save();
+  }
+
+  next.addEventListener('click', () => {
+    const invalid = formKit.validate(form, steps[current]);
+    error.textContent = invalid ? messageFor(invalid) : errorText;
+    error.hidden = !invalid;
+    if (invalid) {
+      invalid.focus();
+      return;
+    }
+    showStep(current + 1, true);
+  });
+  back.addEventListener('click', () => {
+    error.hidden = true;
+    showStep(current - 1, true);
+  });
+
+  // Enter in a field moves on a step instead of submitting early
+  form.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' || e.target.tagName !== 'INPUT' || current === steps.length - 1) return;
+    e.preventDefault();
+    next.click();
+  });
+
+  form.addEventListener('input', (e) => {
+    if (e.target.matches('textarea[data-words]')) updateCount(e.target);
+    save();
+  });
+  form.addEventListener('change', () => {
+    syncRole();
+    save();
+  });
+
+  // Pick up where they left off, keeping the same application ID
+  const saved = draft.load();
+  if (saved) restore(saved);
+  if (!form.elements.applicationId.value) form.elements.applicationId.value = newApplicationId();
+
+  // Links like /volunteer?role=finance pre-select a role
+  const preset = new URLSearchParams(location.search).get('role');
+  const presetInput = preset && roles.find((input) => input.dataset.role === preset && !input.disabled);
+  if (presetInput) presetInput.checked = true;
+
+  // Earliest start date is today, in local time
+  const now = new Date();
+  form.elements.startDate.min = new Date(now - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+
+  syncRole();
+  form.querySelectorAll('textarea[data-words]').forEach(updateCount);
+  gritKit.setup(form, {
+    progress: (key, textarea) => Math.min(countWords(textarea.value) / SOLID_WORDS, 1),
+  });
+
+  form.classList.add('is-stepped');
+  stepper.hidden = false;
+  const savedStep = saved && Number.isInteger(saved.step) ? saved.step : 0;
+  showStep(Math.min(Math.max(savedStep, 0), steps.length - 1), false);
+
+  // Email layout, in the same order as the form
+  const fields = [
+    ['applicationId', 'Application ID'],
+    ['role', 'First choice'], ['secondRole', 'Second choice'],
+    ['hours', 'Hours per week'], ['startDate', 'Can start'],
+    ['commitment', 'Accepts the 6 month minimum'],
+    ['grounded', 'G · Grounded: Kept showing up'],
+    ['resilient', 'R · Resilient: When it got difficult'],
+    ['innovative', 'I · Innovative: An untried idea for the role'],
+    ['teachable', 'T · Teachable: Responding to tough feedback'],
+    ['roleQuestion', 'Role question'], ['roleAnswer', 'Role answer'],
+    ['name', 'Name'], ['email', 'Email'], ['phone', 'WhatsApp'],
+    ['consent', 'Agrees to data being kept'],
+  ];
+
+  formKit.handleSubmit(form, {
+    payload: (data) => {
+      const out = {
+        _subject: `Volunteer application ${data.get('applicationId')}: ${data.get('role')} (${data.get('name')})`,
+        _replyto: data.get('email'),
+      };
+      fields.forEach(([key, label]) => {
+        out[label] = String(data.get(key) || '').trim() || '-';
+      });
+      return out;
+    },
+    thanks: {
+      title: 'Application received. Thank you!',
+      get body() {
+        return `Your application ID is <strong>${form.elements.applicationId.value}</strong>. Keep it handy; we’ll quote it whenever we email you about your application. If you move forward, your role challenge comes next, and you’ll have 72 hours to complete it.`;
+      },
+    },
+    // A field that fails on submit may sit on another step: show that step first
+    onInvalid: (field) => {
+      const step = steps.findIndex((s) => s.contains(field));
+      if (step !== -1 && step !== current) showStep(step, false);
+      error.textContent = messageFor(field);
+    },
+    onSent: () => draft.clear(),
   });
 })();

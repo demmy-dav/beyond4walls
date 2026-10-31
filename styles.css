@@ -1894,6 +1894,93 @@ p { margin: 0; }
   .js .grit-card, .js .grit-card .grit-card__letter { opacity: 1; transform: none; }
 }
 
+/* Volunteer application -------------------------------------------------- */
+/* Six-stage version of the selection flow */
+.flow--six { grid-template-columns: repeat(6, 1fr); max-width: 1000px; }
+.flow--six .flow__step:nth-child(6) { animation-delay: 1.35s; }
+.flow__note { margin-top: 28px; color: var(--muted); font-style: italic; }
+
+/* Step indicator above the current part */
+.stepper { margin-bottom: 36px; }
+.stepper__label { color: var(--ink); font-family: var(--font-head); font-size: 15px; font-weight: 600; }
+.stepper__bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 12px 0 10px; }
+.stepper__bar span { height: 6px; border-radius: 3px; background: #EEF1EC; transition: background-color .3s; }
+.stepper__bar span.is-done { background: var(--green); }
+.stepper__saved { color: var(--muted); font-size: 13px; }
+
+/* One part at a time once main.js takes over */
+.apply__card.is-stepped .apply__part { display: none; }
+.apply__card.is-stepped .apply__part.is-current { display: block; }
+.apply__card.is-stepped .apply__part + .apply__part { margin-top: 0; padding-top: 0; border-top: 0; }
+.part-head:focus { outline: none; }
+
+/* Role cards double as the first-choice radio buttons */
+.role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.role-option { position: relative; display: flex; cursor: pointer; }
+.role-option input { position: absolute; opacity: 0; pointer-events: none; }
+.role-option__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  transition: border-color .2s, background-color .2s, box-shadow .2s;
+}
+.role-option:hover .role-option__body { border-color: var(--green); }
+.role-option input:checked + .role-option__body {
+  border-color: var(--green);
+  background: #F3F9F3;
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+.role-option input:focus-visible + .role-option__body { outline: 3px solid var(--sky); outline-offset: 2px; }
+.role-option__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.role-option__title { color: var(--ink); font-family: var(--font-head); font-size: 17px; font-weight: 700; line-height: 1.3; }
+.role-option__status {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #E9F4E9;
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 700;
+}
+.role-option__desc { color: var(--muted); font-size: 14.5px; line-height: 1.6; }
+.role-grid[aria-invalid="true"] .role-option__body { border-color: #C62828; }
+/* Closed roles stay visible but can't be picked */
+.role-option[data-status="closed"] { cursor: not-allowed; }
+.role-option[data-status="closed"] .role-option__body { border-color: var(--line); background: var(--bg-tint); opacity: .6; }
+.role-option[data-status="closed"] .role-option__status { background: #EEEEEE; color: var(--muted); }
+
+.role-second { max-width: 420px; margin-top: 28px; }
+
+/* Checkbox statements (commitment, consent) */
+.check { display: flex; align-items: flex-start; gap: 12px; color: var(--ink); font-size: 15px; font-weight: 600; line-height: 1.5; cursor: pointer; }
+.apply__card input[type="checkbox"] { flex: none; width: 20px; height: 20px; margin: 2px 0 0; padding: 0; accent-color: var(--green); cursor: pointer; }
+.apply__card input[type="checkbox"][aria-invalid="true"] { outline: 2px solid #C62828; outline-offset: 2px; }
+
+/* Lead's role-specific question, styled like a question card without the letter */
+.role-question { margin-top: 20px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+.role-question .grit-card__word { color: var(--green); }
+.counter.is-over { color: #C62828; font-weight: 600; }
+
+.apply__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.apply__actions [data-next], .apply__actions .apply__submit { margin-left: auto; }
+
+@media (max-width: 960px) {
+  .flow--six { grid-template-columns: repeat(3, 1fr); row-gap: 24px; }
+  .flow--six::before { display: none; }
+}
+@media (max-width: 640px) {
+  .flow--six { grid-template-columns: 1fr; row-gap: 14px; }
+  .flow--six::before { display: block; }
+  .role-grid { grid-template-columns: 1fr; }
+  .role-question { padding: 22px; }
+  .apply__actions .btn { flex: 1; }
+}
+
 /* CTA -------------------------------------------------------------------- */
 .cta { background: var(--green); padding-block: clamp(64px, 9vw, 90px); text-align: center; }
 .cta__inner { display: flex; flex-direction: column; align-items: center; }
@@ -1905,6 +1992,9 @@ p { margin: 0; }
 .cta--photo .cta__inner { position: relative; z-index: 1; }
 .cta__title { color: #fff; font-size: clamp(28px, 4vw, 38px); font-weight: 700; letter-spacing: -0.02em; }
 .cta__body { max-width: 560px; margin: 16px 0 32px; color: rgba(255, 255, 255, .9); font-size: 17px; line-height: 1.7; }
+.cta__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.btn--ghost-light { border-color: rgba(255, 255, 255, .85); color: #fff; padding-inline: 34px; }
+.btn--ghost-light:hover { background: rgba(255, 255, 255, .12); border-color: #fff; }
 
 /* Footer ----------------------------------------------------------------- */
 .footer { background: #0A0A0A; color: #9A9A9A; padding: 70px 0 36px; }
