@@ -19,7 +19,7 @@
   --bg-hero: #FBFDF9;
   --bg-tint: #FAFAF8;
 
-  /* TINC26 sub-brand (Programs page and the home TINC26 promo only) */
+  /* TINC26 sub-brand (Programs page only) */
   --tinc-blue: #1DA6D4;
   --tinc-orange: #F16122;
   --tinc-red: #F20004;
@@ -880,10 +880,10 @@ p { margin: 0; }
   .sdgs__closing .btn { width: 100%; }
 }
 
-/* Home: TINC26 thank you ------------------------------------------------- */
+/* Home: a new chapter (reform announcement + membership) ----------------- */
 /* Sits above the hero, so it shares the hero background */
-.thanks { padding-top: clamp(32px, 5vw, 56px); background: var(--bg-hero); }
-.thanks__card {
+.announce { padding-top: clamp(32px, 5vw, 56px); background: var(--bg-hero); }
+.announce__card {
   max-width: 860px;
   margin-inline: auto;
   padding: clamp(32px, 5vw, 56px) clamp(24px, 5vw, 64px);
@@ -892,15 +892,14 @@ p { margin: 0; }
   background: #fff;
   text-align: center;
 }
-.thanks__stripes { display: flex; justify-content: center; gap: 6px; margin-bottom: 24px; }
-.thanks__stripes span { width: 40px; height: 6px; border-radius: 3px; }
-.thanks__stripes span:nth-child(1) { background: var(--green); }
-.thanks__stripes span:nth-child(2) { background: var(--sky); }
-.thanks__stripes span:nth-child(3) { background: var(--orange); }
-.thanks__title { margin: 14px auto 16px; max-width: 18ch; color: #0E2814; }
-.thanks__body { max-width: 62ch; margin-inline: auto; }
-.thanks__note { margin-top: 16px; color: var(--ink); font-weight: 600; }
-.thanks__actions {
+.announce__stripes { display: flex; justify-content: center; gap: 6px; margin-bottom: 24px; }
+.announce__stripes span { width: 40px; height: 6px; border-radius: 3px; }
+.announce__stripes span:nth-child(1) { background: var(--green); }
+.announce__stripes span:nth-child(2) { background: var(--sky); }
+.announce__stripes span:nth-child(3) { background: var(--orange); }
+.announce__title { margin: 14px auto 16px; max-width: 20ch; color: #0E2814; }
+.announce__body { max-width: 62ch; margin-inline: auto; }
+.announce__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -908,10 +907,54 @@ p { margin: 0; }
   margin-top: 28px;
 }
 
+/* Why join: three short reasons, each with the pillar card's accent bar */
+.why-join { max-width: 1040px; margin: clamp(32px, 5vw, 48px) auto 0; }
+.why-join__title {
+  margin-bottom: 18px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.why-join__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.why-join__item {
+  --accent: var(--green);
+  position: relative;
+  overflow: hidden;
+  padding: 28px 24px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--muted);
+}
+.why-join__item::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 48px; height: 4px;
+  background: var(--accent);
+}
+.why-join__item--sky { --accent: var(--sky); }
+.why-join__item--orange { --accent: var(--orange); }
+.why-join__item h4 { margin: 0 0 8px; color: var(--ink); font-family: var(--font-head); font-size: 18px; font-weight: 700; line-height: 1.3; }
+.why-join__item p { font-size: 15px; line-height: 1.7; }
+
+@media (max-width: 860px) {
+  .why-join__list { grid-template-columns: 1fr; gap: 14px; }
+}
 @media (max-width: 480px) {
-  .thanks .eyebrow { font-size: 12px; letter-spacing: 1.5px; }
-  .thanks__actions { flex-direction: column; }
-  .thanks__actions .btn { width: 100%; }
+  .announce .eyebrow { font-size: 12px; letter-spacing: 1.5px; }
+  .announce__actions { flex-direction: column; }
+  .announce__actions .btn { width: 100%; }
 }
 
 /* Home: about teaser ----------------------------------------------------- */
@@ -1126,50 +1169,6 @@ p { margin: 0; }
 .tp-btn--ghost:hover { border-color: var(--tinc-blue); color: var(--tinc-blue); }
 .tp-btn--lg { padding: 17px 32px; font-size: 16px; }
 .tp-btn--block { width: 100%; }
-
-/* Home: TINC26 promo ----------------------------------------------------- */
-.tinc-promo {
-  background: var(--tinc-bg);
-  color: var(--tinc-muted);
-  padding-block: var(--section-y);
-  border-top: 4px solid var(--tinc-orange);
-}
-.tinc-promo__grid {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: clamp(40px, 6vw, 80px);
-  align-items: center;
-}
-.tinc-promo__eyebrow {
-  color: var(--tinc-blue);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-}
-.tinc-promo__logo { width: auto; height: 52px; margin: 22px 0 20px; }
-.tinc-promo__title { color: #fff; font-size: clamp(30px, 4.2vw, 42px); font-weight: 700; line-height: 1.12; letter-spacing: -0.02em; }
-.tinc-promo__body { margin: 18px 0 24px; font-size: 17px; line-height: 1.75; }
-.tinc-promo__body strong { color: #fff; }
-.tinc-promo__facts { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 0 0 32px; padding: 0; list-style: none; }
-.tinc-promo__facts li {
-  padding: 6px 14px;
-  border: 1px solid var(--tinc-border);
-  border-radius: 999px;
-  background: var(--tinc-surface);
-  color: #fff;
-  font-size: 13.5px;
-  font-weight: 600;
-}
-.tinc-promo__actions { display: flex; flex-wrap: wrap; gap: 14px; }
-.tinc-promo__photo { display: block; overflow: hidden; border-radius: 20px; border: 1px solid var(--tinc-border); }
-.tinc-promo__photo img { width: 100%; transition: transform .6s ease; }
-.tinc-promo__photo:hover img { transform: scale(1.03); }
-
-@media (max-width: 900px) {
-  .tinc-promo__grid { grid-template-columns: 1fr; }
-  .tinc-promo__photo { order: -1; }
-}
 
 /* ========================================================================
    Programs page (TINC26)
@@ -1861,7 +1860,52 @@ p { margin: 0; }
 /* Contact form */
 .text-link { color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .text-link:hover { color: var(--green-dark); }
-.contact-message { margin-top: 28px; }
+.contact-message, .membership-follow { margin-top: 28px; }
+
+/* Membership form */
+.membership-note { margin: 0 0 32px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.field__error { margin: 0; color: #C62828; font-size: 14px; font-weight: 600; }
+.field__error[hidden] { display: none; }
+.counter--over { color: #C62828; font-weight: 700; }
+
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+.checks--stack { grid-template-columns: 1fr; gap: 18px; }
+.check { display: flex; align-items: flex-start; gap: 12px; color: var(--ink); font-size: 15px; line-height: 1.5; cursor: pointer; }
+.apply__card .check input[type="checkbox"] {
+  flex: none;
+  width: 20px; height: 20px;
+  margin: 1px 0 0;
+  padding: 0;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.apply__card .check input[aria-invalid="true"] { outline: 2px solid #C62828; outline-offset: 2px; }
+.privacy-note { margin: 8px 0 0 32px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+/* Longer radio answers, stacked */
+.options { display: grid; gap: 10px; }
+.option { position: relative; display: block; cursor: pointer; }
+.option input { position: absolute; top: 50%; left: 16px; width: 18px; height: 18px; margin: 0; transform: translateY(-50%); accent-color: var(--green); }
+.option span {
+  display: block;
+  padding: 14px 16px 14px 46px;
+  border: 1px solid #D6DDD4;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  transition: border-color .2s, background-color .2s;
+}
+.option:hover span { border-color: var(--green); }
+.option input:checked + span { border-color: var(--green); background: #F0F7F0; }
+.option input:focus-visible + span { outline: 3px solid var(--sky); outline-offset: 2px; }
+.choice[aria-invalid="true"] .option span { border-color: #C62828; }
+
+@media (max-width: 640px) {
+  .checks { grid-template-columns: 1fr; }
+  .privacy-note { margin-left: 0; }
+}
 
 /* Thank-you note that replaces a form once it's sent */
 .sent { padding-block: clamp(24px, 6vw, 56px); text-align: center; animation: flow-in .5s cubic-bezier(.2, .8, .2, 1) both; }

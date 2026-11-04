@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Become a Member — Beyond 4walls</title>
+  <meta name="description" content="Become a member of Beyond4walls and help build a generation of young people who solve problems nobody assigned them.">
+  <meta name="theme-color" content="#228B22">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:title" content="Become a Member of Beyond 4walls">
+  <meta property="og:description" content="Bridging the gap between the classroom and the real world.">
+  <meta property="og:image" content="assets/logo-b4w-black.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAV -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="nav__brand" aria-label="Beyond 4walls home">
+        <img src="assets/logo-b4w-black.png" alt="Beyond 4walls" width="95" height="40">
+      </a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        <span class="visually-hidden">Menu</span>
+        <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <nav id="nav-menu" class="nav__menu" aria-label="Primary">
+        <a href="/about" class="nav__link">About</a>
+        <a href="/programs" class="nav__link">Programs</a>
+        <a href="/contact" class="nav__link">Contact</a>
+        <a href="/membership" class="nav__link" aria-current="page">Become a Member</a>
+        <a href="/ambassadors" class="btn btn--primary btn--sm">Apply as a campus ambassador</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero" aria-labelledby="membership-title">
+      <div class="container page-hero__inner">
+        <p class="eyebrow eyebrow--orange">A new chapter</p>
+        <h1 id="membership-title" class="page-hero__title">Become a Member</h1>
+        <p class="page-hero__lede">Real education was never meant to stop at the walls of a classroom. Beyond4walls is building a generation of young people who solve problems nobody assigned them. Join us: one campus, one leader, one idea at a time.</p>
+      </div>
+    </section>
+
+    <section class="apply" aria-labelledby="membership-form-title">
+      <div class="container">
+        <form class="apply__card" id="membership-form" novalidate aria-describedby="member-required-note">
+          <h2 id="membership-form-title" class="visually-hidden">Membership form</h2>
+          <p id="member-required-note" class="part-intro membership-note">Takes about 3 minutes. Everything is required unless it says optional.</p>
+          <noscript><p class="apply__error">This form needs JavaScript. You can also email us at <a class="text-link" href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>.</p></noscript>
+
+          <!-- Spam trap: hidden from people and screen readers; bots tend to fill it -->
+          <div class="hp" aria-hidden="true">
+            <label for="member-website">Website</label>
+            <input id="member-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">01</span> About you</legend>
+            <div class="field-grid">
+              <div class="field field--full">
+                <label for="member-name">Full name</label>
+                <input id="member-name" name="fullName" type="text" autocomplete="name" maxlength="100" required aria-describedby="member-name-error">
+                <p class="field__error" id="member-name-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="member-email">Email</label>
+                <input id="member-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" required aria-describedby="member-email-error">
+                <p class="field__error" id="member-email-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="member-phone">WhatsApp number</label>
+                <input id="member-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="+234 801 234 5678" required aria-describedby="member-phone-error">
+                <p class="field__error" id="member-phone-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="member-gender">Gender <span class="field__optional">(optional)</span></label>
+                <select id="member-gender" name="gender">
+                  <option value="">Choose…</option>
+                  <option>Female</option>
+                  <option>Male</option>
+                  <option>Prefer not to say</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="member-age">Age range</label>
+                <select id="member-age" name="ageRange" required aria-describedby="member-age-error">
+                  <option value="">Choose…</option>
+                  <option>Under 18</option>
+                  <option>18-24</option>
+                  <option>25-34</option>
+                  <option>35+</option>
+                </select>
+                <p class="field__error" id="member-age-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="member-state">State</label>
+                <select id="member-state" name="state" autocomplete="address-level1" required aria-describedby="member-state-error">
+                  <option value="">Choose…</option>
+                  <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option><option>Anambra</option>
+                  <option>Bauchi</option><option>Bayelsa</option><option>Benue</option><option>Borno</option>
+                  <option>Cross River</option><option>Delta</option><option>Ebonyi</option><option>Edo</option>
+                  <option>Ekiti</option><option>Enugu</option><option>FCT (Abuja)</option><option>Gombe</option>
+                  <option>Imo</option><option>Jigawa</option><option>Kaduna</option><option>Kano</option>
+                  <option>Katsina</option><option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+                  <option>Lagos</option><option>Nasarawa</option><option>Niger</option><option>Ogun</option>
+                  <option>Ondo</option><option>Osun</option><option>Oyo</option><option>Plateau</option>
+                  <option>Rivers</option><option>Sokoto</option><option>Taraba</option><option>Yobe</option>
+                  <option>Zamfara</option><option>Outside Nigeria</option>
+                </select>
+                <p class="field__error" id="member-state-error" hidden></p>
+              </div>
+              <div class="field">
+                <label for="member-city">City</label>
+                <input id="member-city" name="city" type="text" autocomplete="address-level2" maxlength="80" required aria-describedby="member-city-error">
+                <p class="field__error" id="member-city-error" hidden></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">02</span> Where you are</legend>
+            <fieldset class="field choice" id="member-role" aria-describedby="member-role-error">
+              <legend>I am a</legend>
+              <div class="choice__row">
+                <label class="pill"><input type="radio" name="role" value="Student" required><span>Student</span></label>
+                <label class="pill"><input type="radio" name="role" value="Graduate or NYSC"><span>Graduate or NYSC</span></label>
+                <label class="pill"><input type="radio" name="role" value="Working professional"><span>Working professional</span></label>
+                <label class="pill"><input type="radio" name="role" value="Entrepreneur"><span>Entrepreneur</span></label>
+                <label class="pill"><input type="radio" name="role" value="Other"><span>Other</span></label>
+              </div>
+              <p class="field__error" id="member-role-error" hidden></p>
+            </fieldset>
+            <div class="field-grid membership-follow">
+              <div class="field">
+                <label for="member-org">School or organisation <span class="field__optional">(optional)</span></label>
+                <input id="member-org" name="organisation" type="text" autocomplete="organization" maxlength="120">
+              </div>
+              <div class="field" id="member-level-field" hidden>
+                <label for="member-level">Level or course <span class="field__optional">(optional)</span></label>
+                <input id="member-level" name="level" type="text" maxlength="120" placeholder="e.g. 300L, Mechanical Engineering">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">03</span> How you want to be part of this</legend>
+            <div class="field field--full">
+              <label for="member-why">What brings you to Beyond4walls?</label>
+              <textarea id="member-why" name="why" rows="4" maxlength="600" required aria-describedby="member-why-hint member-why-count member-why-error"></textarea>
+              <span class="visually-hidden" id="member-why-hint">Up to 50 words.</span>
+              <span class="counter" id="member-why-count" aria-hidden="true">0 / 50 words</span>
+              <span class="visually-hidden" id="member-why-live" aria-live="polite"></span>
+              <p class="field__error" id="member-why-error" hidden></p>
+            </div>
+
+            <fieldset class="field membership-follow">
+              <legend>Areas of interest <span class="field__optional">(optional, choose any)</span></legend>
+              <div class="checks">
+                <label class="check"><input type="checkbox" name="interests" value="Discover - research and new ideas"><span><strong>Discover</strong> · research and new ideas</span></label>
+                <label class="check"><input type="checkbox" name="interests" value="Build - designing initiatives"><span><strong>Build</strong> · designing initiatives</span></label>
+                <label class="check"><input type="checkbox" name="interests" value="Partnerships and funding"><span>Partnerships and funding</span></label>
+                <label class="check"><input type="checkbox" name="interests" value="Communications and storytelling"><span>Communications and storytelling</span></label>
+                <label class="check"><input type="checkbox" name="interests" value="Programs and events"><span>Programs and events</span></label>
+                <label class="check"><input type="checkbox" name="interests" value="Campus leadership"><span>Campus leadership</span></label>
+                <label class="check"><input type="checkbox" name="interests" value="Tech and digital"><span>Tech and digital</span></label>
+              </div>
+            </fieldset>
+
+            <div class="field field--full membership-follow">
+              <label for="member-skills">Skills you could contribute <span class="field__optional">(optional)</span></label>
+              <textarea id="member-skills" name="skills" rows="3" maxlength="1000" placeholder="e.g. design, writing, event planning, coding, fundraising"></textarea>
+            </div>
+          </fieldset>
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">04</span> Going further</legend>
+            <fieldset class="field choice" id="member-further" aria-describedby="member-further-error">
+              <legend>How would you like to be involved?</legend>
+              <div class="options">
+                <label class="option"><input type="radio" name="goingFurther" value="member" required><span>Just a member for now</span></label>
+                <label class="option"><input type="radio" name="goingFurther" value="campus_leader"><span>I'd like to lead on my campus (Campus Leader)</span></label>
+                <label class="option"><input type="radio" name="goingFurther" value="volunteer"><span>I'd like to volunteer on the team</span></label>
+                <label class="option"><input type="radio" name="goingFurther" value="partner"><span>I'd like to partner or sponsor as an organisation</span></label>
+              </div>
+              <p class="field__error" id="member-further-error" hidden></p>
+            </fieldset>
+          </fieldset>
+
+          <fieldset class="apply__part">
+            <legend class="part-head"><span class="part-head__num">05</span> Consent</legend>
+            <div class="checks checks--stack">
+              <div>
+                <label class="check"><input id="member-consent" type="checkbox" name="consent" required aria-describedby="member-privacy member-consent-error"><span>I agree to Beyond4walls storing my details and contacting me about programs and updates.</span></label>
+                <p class="privacy-note" id="member-privacy">We use your details only to welcome you, match you with programs and roles, and keep in touch. They go to our team inbox and aren't sold or shared outside Beyond4walls. Nothing is saved in your browser. To change or delete your details, email <a class="text-link" href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>.</p>
+                <p class="field__error" id="member-consent-error" hidden></p>
+              </div>
+              <label class="check"><input type="checkbox" name="updates"><span>I'd like to receive updates by WhatsApp and email. <span class="field__optional">(optional)</span></span></label>
+            </div>
+          </fieldset>
+
+          <div class="apply__foot">
+            <p class="apply__error" id="member-form-error" role="alert" hidden></p>
+            <p class="apply__status" role="status" aria-live="polite"></p>
+            <button type="submit" class="btn btn--primary apply__submit">Become a Member</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="assets/logo-b4w-white.png" alt="Beyond 4walls" width="117" height="60" loading="lazy">
+          <p>A group of young change-makers bridging the gap between the classroom and the real world.</p>
+        </div>
+        <nav class="footer__col" aria-label="Explore">
+          <h3 class="footer__heading">Explore</h3>
+          <a href="/about">About</a>
+          <a href="/programs">Programs</a>
+          <a href="/membership">Become a Member</a>
+          <a href="/ambassadors">Campus Ambassadors</a>
+        </nav>
+        <div class="footer__col">
+          <h3 class="footer__heading">Contact</h3>
+          <a href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>
+          <a href="/contact">Send us a message</a>
+          <a href="/contact?topic=partner">Partner with us</a>
+        </div>
+        <div class="footer__col">
+          <h3 class="footer__heading">Follow</h3>
+          <div class="socials">
+            <a href="https://www.instagram.com/b4w___/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/beyond4walls-education-awareness-initiative/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10.5V16.5M12 16.5V10.5M12 13.25c0-1.6 1-2.75 2.5-2.75S16.5 11.5 16.5 13v3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="7.5" r="1.2" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="footer__legal">© 2026 Beyond 4walls. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+  <script src="membership.js" defer></script>
+</body>
+</html>

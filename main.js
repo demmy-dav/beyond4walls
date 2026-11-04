@@ -236,7 +236,7 @@ const SHOW_GALLERY = false;
   });
 })();
 
-// Forms (contact, campus ambassadors). The site has no backend, so submissions
+// Forms (contact, campus ambassadors). These pages have no backend, so submissions
 // go through FormSubmit, which emails them to our inbox. Each form's plain
 // action attribute is the no-JS fallback.
 const formKit = (function () {
