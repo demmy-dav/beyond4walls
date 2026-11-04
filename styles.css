@@ -1862,6 +1862,51 @@ p { margin: 0; }
 .text-link:hover { color: var(--green-dark); }
 .contact-message, .membership-follow { margin-top: 28px; }
 
+/* Membership form */
+.membership-note { margin: 0 0 32px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.field__error { margin: 0; color: #C62828; font-size: 14px; font-weight: 600; }
+.field__error[hidden] { display: none; }
+.counter--over { color: #C62828; font-weight: 700; }
+
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+.checks--stack { grid-template-columns: 1fr; gap: 18px; }
+.check { display: flex; align-items: flex-start; gap: 12px; color: var(--ink); font-size: 15px; line-height: 1.5; cursor: pointer; }
+.apply__card .check input[type="checkbox"] {
+  flex: none;
+  width: 20px; height: 20px;
+  margin: 1px 0 0;
+  padding: 0;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.apply__card .check input[aria-invalid="true"] { outline: 2px solid #C62828; outline-offset: 2px; }
+.privacy-note { margin: 8px 0 0 32px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+/* Longer radio answers, stacked */
+.options { display: grid; gap: 10px; }
+.option { position: relative; display: block; cursor: pointer; }
+.option input { position: absolute; top: 50%; left: 16px; width: 18px; height: 18px; margin: 0; transform: translateY(-50%); accent-color: var(--green); }
+.option span {
+  display: block;
+  padding: 14px 16px 14px 46px;
+  border: 1px solid #D6DDD4;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  transition: border-color .2s, background-color .2s;
+}
+.option:hover span { border-color: var(--green); }
+.option input:checked + span { border-color: var(--green); background: #F0F7F0; }
+.option input:focus-visible + span { outline: 3px solid var(--sky); outline-offset: 2px; }
+.choice[aria-invalid="true"] .option span { border-color: #C62828; }
+
+@media (max-width: 640px) {
+  .checks { grid-template-columns: 1fr; }
+  .privacy-note { margin-left: 0; }
+}
+
 /* Thank-you note that replaces a form once it's sent */
 .sent { padding-block: clamp(24px, 6vw, 56px); text-align: center; animation: flow-in .5s cubic-bezier(.2, .8, .2, 1) both; }
 .sent__icon {

@@ -236,7 +236,7 @@ const SHOW_GALLERY = false;
   });
 })();
 
-// Forms (contact, campus ambassadors). The site has no backend, so submissions
+// Forms (contact, campus ambassadors). These pages have no backend, so submissions
 // go through FormSubmit, which emails them to our inbox. Each form's plain
 // action attribute is the no-JS fallback.
 const formKit = (function () {
@@ -378,31 +378,6 @@ const formKit = (function () {
     thanks: {
       title: 'Message sent. Thank you!',
       body: 'We’ve got it and will reply to your email soon.',
-    },
-  });
-})();
-
-// Membership form
-(function () {
-  const form = document.getElementById('membership-form');
-  if (!form) return;
-
-  formKit.handleSubmit(form, {
-    payload: (data) => ({
-      _subject: `Membership request: ${data.get('name')} (${data.get('role')})`,
-      _replyto: data.get('email'),
-      Name: data.get('name'),
-      Email: data.get('email'),
-      'Phone or WhatsApp': data.get('phone') || '-',
-      'City and state': data.get('location'),
-      'Describes them': data.get('role'),
-      'School, organization or workplace': data.get('organization') || '-',
-      'Why they want to join': data.get('why'),
-      'Heard about us': data.get('heard') || '-',
-    }),
-    thanks: {
-      title: 'Welcome aboard. Thank you!',
-      body: 'We’ve received your membership request and will be in touch by email.',
     },
   });
 })();
