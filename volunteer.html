@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Volunteer — Beyond 4walls</title>
+  <meta name="description" content="Volunteer with Beyond 4walls. Choose a role, commit for six months, and show us your G.R.I.T.: grounded, resilient, innovative, teachable.">
+  <meta name="theme-color" content="#228B22">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta property="og:title" content="Volunteer with Beyond 4walls">
+  <meta property="og:description" content="Bridging the gap between the classroom and the real world.">
+  <meta property="og:image" content="assets/logo-b4w-black.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAV -->
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="nav__brand" aria-label="Beyond 4walls home">
+        <img src="assets/logo-b4w-black.png" alt="Beyond 4walls" width="95" height="40">
+      </a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+        <span class="visually-hidden">Menu</span>
+        <svg class="icon-open" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <nav id="nav-menu" class="nav__menu" aria-label="Primary">
+        <a href="/about" class="nav__link">About</a>
+        <a href="/programs" class="nav__link">Programs</a>
+        <a href="/contact" class="nav__link">Contact</a>
+        <a href="/ambassadors" class="btn btn--primary btn--sm">Apply as a campus ambassador</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero" aria-labelledby="vol-title">
+      <div class="container page-hero__inner">
+        <p class="eyebrow eyebrow--orange">Volunteer</p>
+        <h1 id="vol-title" class="page-hero__title">Volunteer with Beyond 4walls</h1>
+        <p class="page-hero__lede">Working with Beyond 4walls takes effort to get into, because what we are building deserves people who are in it for real. If you believe you can do great things from small places, then there is a place for you here. Take your time, answer honestly, and show us who you are.</p>
+
+        <ol class="flow flow--six" aria-label="How selection works">
+          <li class="flow__step"><span class="flow__dot">1</span>Choose a role</li>
+          <li class="flow__step"><span class="flow__dot">2</span>Commit</li>
+          <li class="flow__step"><span class="flow__dot">3</span>G.R.I.T. answers</li>
+          <li class="flow__step"><span class="flow__dot">4</span>Role challenge</li>
+          <li class="flow__step"><span class="flow__dot">5</span>Interview</li>
+          <li class="flow__step"><span class="flow__dot">6</span>Offer &amp; trial</li>
+        </ol>
+        <p class="flow__note">A harder door means a stronger house. The people who walk through it will be the ones who stay.</p>
+      </div>
+    </section>
+
+    <section class="apply" aria-labelledby="apply-title">
+      <div class="container">
+        <form class="apply__card" id="volunteer-form" action="https://formsubmit.co/hello@beyond4wallsed.org" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="Volunteer application">
+          <input type="hidden" name="_template" value="table">
+          <!-- Spam trap: real visitors never see or fill this -->
+          <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="hidden" name="applicationId">
+          <input type="hidden" name="roleQuestion">
+          <h2 id="apply-title" class="visually-hidden">Volunteer application</h2>
+
+          <!-- Step indicator, shown by main.js (without JS every part shows at once) -->
+          <div class="stepper" hidden>
+            <p class="stepper__label" aria-live="polite">Step <span data-step-num>1</span> of 4: <span data-step-name>Choose a role</span></p>
+            <div class="stepper__bar" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <p class="stepper__saved">Your answers are saved on this device as you go.</p>
+          </div>
+
+          <!-- 01 ROLE -->
+          <fieldset class="apply__part" data-step="Choose a role">
+            <legend class="part-head" tabindex="-1"><span class="part-head__num">01</span> Choose a role</legend>
+            <p class="part-intro">Pick the role you want most. Skills help, but we select for G.R.I.T. first and skills second.</p>
+
+            <!-- To close a role, set data-status="closed" on its card: it stays visible but can't be picked -->
+            <fieldset class="choice role-grid">
+              <legend class="visually-hidden">Your first choice</legend>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Strategic Partnerships" data-role="partnerships" required>
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Strategic Partnerships</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You go out and find the people and organizations who believe in what we're building enough to stand behind it. Every partnership you close is a door opening for someone we haven't met yet.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Communications &amp; PR" data-role="communications">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Communications &amp; PR</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You take everything we're building and give it a voice the world can hear. Without you, great work happens in silence. With you, it becomes a movement.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Programs &amp; Logistics" data-role="programs">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Programs &amp; Logistics</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You turn ideas into things that actually happen, on the ground, on time, for real people. You're the hands that build what everyone else imagines.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Finance" data-role="finance">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Finance</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You make sure every dream we chase is one we can actually afford to chase, and chase well. You protect the house so it can keep growing.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Student Relations" data-role="students">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Student Relations</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You're planting Beyond 4walls into the soil of every campus we touch, one Campus Leader at a time, each one carrying the same fire you carry.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="IT &amp; Technology" data-role="it">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">IT &amp; Technology</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You make sure nothing we build is ever lost. Every idea, every event, every win, you keep it alive and accessible, long after the moment has passed.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Research &amp; Development" data-role="research">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Research &amp; Development</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You keep us honest and forward looking. You find what's true, what's working, and what's next, including through the Monitoring &amp; Evaluation team that reports through you.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Event Experience" data-role="events">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Event Experience</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You're where the vision becomes something people can feel with their own senses, in a room, at an event, in a moment they won't forget.</span>
+                </span>
+              </label>
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Alumni &amp; Community" data-role="alumni">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Alumni &amp; Community</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You make sure nobody who's ever been part of this family truly leaves it. You keep the circle widening instead of closing.</span>
+                </span>
+              </label>
+              <!-- data-question: the extra question from that role's Lead, asked in step 03 -->
+              <label class="role-option" data-status="open">
+                <input type="radio" name="role" value="Volunteer Management" data-role="volunteers" data-question="What makes a volunteer stay?">
+                <span class="role-option__body">
+                  <span class="role-option__top"><span class="role-option__title">Volunteer Management</span><span class="role-option__status">Open</span></span>
+                  <span class="role-option__desc">You find the people willing to give their time for something bigger than themselves, and you make sure that gift is never wasted.</span>
+                </span>
+              </label>
+            </fieldset>
+
+            <div class="field role-second">
+              <label for="vol-second">Second choice <span class="field__optional">(optional)</span></label>
+              <select id="vol-second" name="secondRole">
+                <option value="">No second choice</option>
+                <option>Strategic Partnerships</option>
+                <option>Communications &amp; PR</option>
+                <option>Programs &amp; Logistics</option>
+                <option>Finance</option>
+                <option>Student Relations</option>
+                <option>IT &amp; Technology</option>
+                <option>Research &amp; Development</option>
+                <option>Event Experience</option>
+                <option>Alumni &amp; Community</option>
+                <option>Volunteer Management</option>
+              </select>
+            </div>
+          </fieldset>
+
+          <!-- 02 COMMITMENT -->
+          <fieldset class="apply__part" data-step="Your commitment">
+            <legend class="part-head" tabindex="-1"><span class="part-head__num">02</span> Your commitment</legend>
+            <p class="part-intro">Before any questions, tell us what you can truly give.</p>
+            <div class="field-grid">
+              <div class="field">
+                <label for="vol-hours">Hours you can commit each week</label>
+                <select id="vol-hours" name="hours" required>
+                  <option value="">Choose one</option>
+                  <option>1 to 2 hours</option>
+                  <option>3 to 5 hours</option>
+                  <option>6 to 8 hours</option>
+                  <option>9 to 12 hours</option>
+                  <option>More than 12 hours</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="vol-start">When could you start?</label>
+                <input id="vol-start" name="startDate" type="date" required>
+              </div>
+              <div class="field field--full">
+                <label class="check">
+                  <input type="checkbox" name="commitment" value="Yes" required>
+                  <span>I understand this is a minimum 6 month commitment, and I intend to see it through.</span>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- 03 G.R.I.T. -->
+          <fieldset class="apply__part grit" data-step="Show us your G.R.I.T.">
+            <legend class="part-head" tabindex="-1"><span class="part-head__num">03</span> Show us your G.R.I.T.</legend>
+            <p class="part-intro">Four short, story-based questions, one for each G.R.I.T. trait. Each answer is limited to 150 words, so clarity matters. Each letter fills up as you write.</p>
+
+            <div class="grit-meter" aria-hidden="true">
+              <a href="#grit-g" class="grit-meter__tile grit-meter__tile--g" data-meter="g" tabindex="-1"><span class="grit-meter__letter">G</span><span class="grit-meter__bar"><span></span></span></a>
+              <a href="#grit-r" class="grit-meter__tile grit-meter__tile--r" data-meter="r" tabindex="-1"><span class="grit-meter__letter">R</span><span class="grit-meter__bar"><span></span></span></a>
+              <a href="#grit-i" class="grit-meter__tile grit-meter__tile--i" data-meter="i" tabindex="-1"><span class="grit-meter__letter">I</span><span class="grit-meter__bar"><span></span></span></a>
+              <a href="#grit-t" class="grit-meter__tile grit-meter__tile--t" data-meter="t" tabindex="-1"><span class="grit-meter__letter">T</span><span class="grit-meter__bar"><span></span></span></a>
+              <span class="grit-meter__done">Full G.R.I.T.</span>
+            </div>
+
+            <div class="grit-card grit-card--g" id="grit-g" data-grit="g">
+              <span class="grit-card__letter" aria-hidden="true">G</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Grounded</p>
+                <label for="vol-grounded" class="grit-card__q">Tell us about a time you kept showing up for something, even when nobody was watching or rewarding you.</label>
+                <textarea id="vol-grounded" name="grounded" rows="6" maxlength="1500" data-words aria-describedby="vol-grounded-count" required></textarea>
+                <span class="counter" id="vol-grounded-count">Up to 150 words</span>
+              </div>
+            </div>
+
+            <div class="grit-card grit-card--r" id="grit-r" data-grit="r">
+              <span class="grit-card__letter" aria-hidden="true">R</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Resilient</p>
+                <label for="vol-resilient" class="grit-card__q">Describe a time a group effort or volunteer project got difficult. What did you do to keep going?</label>
+                <textarea id="vol-resilient" name="resilient" rows="6" maxlength="1500" data-words aria-describedby="vol-resilient-count" required></textarea>
+                <span class="counter" id="vol-resilient-count">Up to 150 words</span>
+              </div>
+            </div>
+
+            <div class="grit-card grit-card--i" id="grit-i" data-grit="i">
+              <span class="grit-card__letter" aria-hidden="true">I</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Innovative</p>
+                <label for="vol-innovative" class="grit-card__q">What is one idea that could make this role better, that you have not seen anyone else try?</label>
+                <textarea id="vol-innovative" name="innovative" rows="6" maxlength="1500" data-words aria-describedby="vol-innovative-count" required></textarea>
+                <span class="counter" id="vol-innovative-count">Up to 150 words</span>
+              </div>
+            </div>
+
+            <div class="grit-card grit-card--t" id="grit-t" data-grit="t">
+              <span class="grit-card__letter" aria-hidden="true">T</span>
+              <div class="grit-card__body">
+                <p class="grit-card__word">Teachable</p>
+                <label for="vol-teachable" class="grit-card__q">Tell us about a time you received tough feedback while working with others. How did you respond?</label>
+                <textarea id="vol-teachable" name="teachable" rows="6" maxlength="1500" data-words aria-describedby="vol-teachable-count" required></textarea>
+                <span class="counter" id="vol-teachable-count">Up to 150 words</span>
+              </div>
+            </div>
+
+            <!-- Shown by main.js when the chosen role has a question from its Lead -->
+            <div class="role-question" data-role-question hidden>
+              <p class="grit-card__word">From the <span data-role-name></span> Lead</p>
+              <label for="vol-roleq" class="grit-card__q" data-role-text></label>
+              <textarea id="vol-roleq" name="roleAnswer" rows="6" maxlength="1500" data-words aria-describedby="vol-roleq-count"></textarea>
+              <span class="counter" id="vol-roleq-count">Up to 150 words</span>
+            </div>
+          </fieldset>
+
+          <!-- 04 ABOUT YOU -->
+          <fieldset class="apply__part" data-step="About you">
+            <legend class="part-head" tabindex="-1"><span class="part-head__num">04</span> About you</legend>
+            <div class="field-grid">
+              <div class="field">
+                <label for="vol-name">Full name</label>
+                <input id="vol-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="vol-email">Email</label>
+                <input id="vol-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="vol-phone">WhatsApp number</label>
+                <input id="vol-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
+              </div>
+              <div class="field field--full">
+                <label class="check">
+                  <input type="checkbox" name="consent" value="Yes" required>
+                  <span>I agree to Beyond 4walls keeping my answers and contact details so the team can review my application.</span>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="apply__foot">
+            <p class="apply__error" role="alert" hidden>Please fill in all the required fields.</p>
+            <p class="apply__status" role="status"></p>
+            <div class="apply__actions">
+              <button type="button" class="btn btn--outline" data-back hidden>Back</button>
+              <button type="button" class="btn btn--primary" data-next hidden>Next</button>
+              <button type="submit" class="btn btn--primary apply__submit">Submit application</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <img src="assets/logo-b4w-white.png" alt="Beyond 4walls" width="117" height="60" loading="lazy">
+          <p>A group of young change-makers bridging the gap between the classroom and the real world.</p>
+        </div>
+        <nav class="footer__col" aria-label="Explore">
+          <h3 class="footer__heading">Explore</h3>
+          <a href="/about">About</a>
+          <a href="/programs">Programs</a>
+          <a href="/ambassadors">Campus Ambassadors</a>
+          <a href="/volunteer">Volunteer</a>
+        </nav>
+        <div class="footer__col">
+          <h3 class="footer__heading">Contact</h3>
+          <a href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>
+          <a href="/contact">Send us a message</a>
+          <a href="/contact?topic=partner">Partner with us</a>
+        </div>
+        <div class="footer__col">
+          <h3 class="footer__heading">Follow</h3>
+          <div class="socials">
+            <a href="https://www.instagram.com/b4w___/" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/beyond4walls-education-awareness-initiative/" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10.5V16.5M12 16.5V10.5M12 13.25c0-1.6 1-2.75 2.5-2.75S16.5 11.5 16.5 13v3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="7.5" r="1.2" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="footer__legal">© 2026 Beyond 4walls. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
