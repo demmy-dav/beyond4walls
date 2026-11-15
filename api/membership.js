@@ -1,10 +1,29 @@
 // POST /api/membership
-// Validates a membership application, emails it to the team (MEMBERSHIP_TO_EMAIL)
-// and sends the applicant a confirmation, both through the Resend REST API.
+// Validates a membership application, saves it to Supabase (when configured),
+// then emails it to the team (MEMBERSHIP_TO_EMAIL) and sends the applicant a
+// confirmation, both through the Resend REST API. A stored application counts
+// as a success even if the team email fails: the row is flagged for retry.
 // Plain Node (no framework): works as a Vercel function and with a bare http server.
+//
+// Env vars:
+//   RESEND_API_KEY, MEMBERSHIP_TO_EMAIL          email delivery
+//   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY      durable storage (table membership_applications)
+// At least one of the two groups must be complete or the form returns 500.
 
 const RESEND_URL = 'https://api.resend.com/emails';
 const FROM = 'Beyond4walls <hello@beyond4wallsed.org>';
+const TABLE = 'membership_applications';
+
+// Sites allowed to post the form. Same-host requests (vercel dev, any domain
+// attached to this deployment) are also allowed; see originAllowed().
+const ALLOWED_ORIGINS = new Set([
+  'https://beyond4wallsed.org',
+  'https://www.beyond4wallsed.org',
+]);
+// This project's Vercel previews only (team scope "leadwayvictorys-2639"), e.g.
+// beyond4walls-3we8ahmew-leadwayvictorys-2639.vercel.app and
+// beyond4walls-git-<branch>-leadwayvictorys-2639.vercel.app
+const PREVIEW_HOST = /^beyond4walls(?:-[a-z0-9-]+)?-leadwayvictorys-2639\.vercel\.app$/;
 
 const MIN_FILL_MS = 5000;          // faster than this is a bot
 const MAX_BODY_BYTES = 20 * 1024;
@@ -67,6 +86,51 @@ function clean(value, { multiline = false } = {}) {
 }
 
 const countWords = (s) => (s.trim() ? s.trim().split(/\s+/).length : 0);
+
+// One JSON line per event, easy to filter in Vercel logs ("api/membership").
+// Never pass secrets or applicant details in `details`.
+function log(level, reason, details = {}) {
+  const line = JSON.stringify({ fn: 'api/membership', level, reason, ...details });
+  if (level === 'error') console.error(line);
+  else if (level === 'warn') console.warn(line);
+  else console.log(line);
+}
+
+// Strip anything that could be an email address or API key from third-party
+// error text before it is logged, and keep it short.
+function redact(value) {
+  return String(value == null ? '' : value)
+    .replace(/[^\s@<>"'(),;:]+@[^\s@<>"'(),;:]+/g, '[email]')
+    .replace(/\bre_[A-Za-z0-9_]{8,}/g, '[key]')
+    .replace(/\beyJ[A-Za-z0-9._-]{20,}/g, '[token]')
+    .slice(0, 500);
+}
+
+// Network/timeout errors have no HTTP status; describe them without the request
+function describeError(err) {
+  if (err && err.status) return { status: err.status, ...err.info };
+  return {
+    status: null,
+    errorName: err && err.name,
+    errorCode: err && err.cause && err.cause.code,
+    message: redact(err && err.message),
+  };
+}
+
+function originAllowed(origin, host) {
+  let url;
+  try { url = new URL(origin); } catch (_) { return false; }
+  if (ALLOWED_ORIGINS.has(url.origin)) return true;
+  if (url.protocol === 'https:' && !url.port) {
+    if (PREVIEW_HOST.test(url.hostname)) return true;
+    // This deployment's own URLs, set by Vercel at runtime
+    if ([process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL].includes(url.hostname)) return true;
+  }
+  return url.host === host;
+}
+
+const missingEnv = (names) => names.filter((n) => !process.env[n]);
+let storageNoticeLogged = false;
 
 function clientIp(req) {
   const fwd = req.headers['x-forwarded-for'];
@@ -270,16 +334,92 @@ async function sendEmail(apiKey, payload) {
     signal: AbortSignal.timeout(10000),
   });
   if (!res.ok) {
-    const info = await res.json().catch(() => ({}));
-    // Only the status and Resend's error name: never the key or the applicant's details
-    throw new Error(`Resend ${res.status}${info.name ? ` (${info.name})` : ''}`);
+    const body = await res.text().catch(() => '');
+    let info = {};
+    try { info = JSON.parse(body); } catch (_) { /* not JSON */ }
+    // Status, Resend's error name and its message (redacted): never the key or applicant details
+    throw Object.assign(new Error(`Resend ${res.status}${info.name ? ` (${info.name})` : ''}`), {
+      status: res.status,
+      info: { resendError: info.name || null, resendMessage: redact(info.message || body) },
+    });
   }
   return res.json().catch(() => ({}));
+}
+
+// ---- storage (Supabase PostgREST, service role: server only) --------------
+
+function storageConfig() {
+  const url = (process.env.SUPABASE_URL || '').replace(/\/+$/, '');
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  return url && key ? { url, key } : null;
+}
+
+async function supabase(cfg, path, { method, body, prefer }) {
+  const res = await fetch(`${cfg.url}/rest/v1/${path}`, {
+    method,
+    headers: {
+      apikey: cfg.key,
+      Authorization: `Bearer ${cfg.key}`,
+      'Content-Type': 'application/json',
+      ...(prefer ? { Prefer: prefer } : {}),
+    },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(8000),
+  });
+  const text = await res.text().catch(() => '');
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch (_) { data = null; }
+  if (!res.ok) {
+    throw Object.assign(new Error(`Supabase ${res.status}`), {
+      status: res.status,
+      info: {
+        supabaseCode: (data && data.code) || null,
+        supabaseMessage: redact((data && (data.message || data.hint)) || text),
+      },
+    });
+  }
+  return data;
+}
+
+async function storeSubmission(cfg, d) {
+  const rows = await supabase(cfg, `${TABLE}?select=id`, {
+    method: 'POST',
+    prefer: 'return=representation',
+    body: {
+      full_name: d.fullName,
+      email: d.email,
+      phone: d.phone,
+      gender: d.gender || null,
+      age_range: d.ageRange,
+      state: d.state,
+      city: d.city,
+      role: d.role,
+      organisation: d.organisation || null,
+      level: d.level || null,
+      why: d.why,
+      interests: d.interests,
+      skills: d.skills || null,
+      going_further: d.goingFurther,
+      consent: d.consent,
+      updates: d.updates,
+    },
+  });
+  return rows && rows[0] && rows[0].id;
+}
+
+async function updateSubmission(cfg, id, fields) {
+  try {
+    await supabase(cfg, `${TABLE}?id=eq.${encodeURIComponent(id)}`, { method: 'PATCH', body: fields });
+  } catch (err) {
+    log('error', 'storage_update_failed', { submissionId: id, ...describeError(err) });
+  }
 }
 
 // ---- handler --------------------------------------------------------------
 
 module.exports = async function handler(req, res) {
+  const requestId = req.headers['x-vercel-id'] || undefined; // matches the Vercel log entry
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return send(res, 405, { ok: false, error: 'Method not allowed.' });
@@ -287,20 +427,19 @@ module.exports = async function handler(req, res) {
 
   const type = String(req.headers['content-type'] || '').toLowerCase();
   if (!type.startsWith('application/json')) {
+    log('warn', 'bad_content_type', { requestId, contentType: type.slice(0, 80) });
     return send(res, 415, { ok: false, error: 'Please send the form as JSON.' });
   }
 
   // Only accept posts from our own pages (browsers always send Origin on fetch POST)
   const origin = req.headers.origin;
-  if (origin) {
-    let originHost = '';
-    try { originHost = new URL(origin).host; } catch (_) { /* invalid origin */ }
-    if (originHost !== req.headers.host) {
-      return send(res, 403, { ok: false, error: 'This form can only be sent from the Beyond4walls website.' });
-    }
+  if (origin && !originAllowed(origin, req.headers.host)) {
+    log('warn', 'origin_rejected', { requestId, origin: String(origin).slice(0, 200), host: req.headers.host });
+    return send(res, 403, { ok: false, error: 'This form can only be sent from the Beyond4walls website.' });
   }
 
   if (rateLimited(clientIp(req))) {
+    log('warn', 'rate_limited', { requestId, max: RATE_LIMIT.max, windowMs: RATE_LIMIT.windowMs });
     res.setHeader('Retry-After', String(Math.ceil(RATE_LIMIT.windowMs / 1000)));
     return send(res, 429, { ok: false, error: 'Too many attempts. Please wait a few minutes and try again.' });
   }
@@ -309,71 +448,130 @@ module.exports = async function handler(req, res) {
   try {
     raw = await readJson(req);
   } catch (err) {
-    if (err.code === 'TOO_LARGE') return send(res, 413, { ok: false, error: 'That submission is too large.' });
+    if (err.code === 'TOO_LARGE') {
+      log('warn', 'body_too_large', { requestId });
+      return send(res, 413, { ok: false, error: 'That submission is too large.' });
+    }
+    log('warn', 'body_unreadable', { requestId, errorName: err.name });
     return send(res, 400, { ok: false, error: 'We couldn’t read that submission. Please try again.' });
   }
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    log('warn', 'body_not_object', { requestId });
     return send(res, 400, { ok: false, error: 'We couldn’t read that submission. Please try again.' });
   }
   if (JSON.stringify(raw).length > MAX_BODY_BYTES) {
+    log('warn', 'body_too_large', { requestId });
     return send(res, 413, { ok: false, error: 'That submission is too large.' });
   }
 
   // Honeypot: real visitors never see this field. Pretend it worked so bots move on.
-  if (clean(raw.website)) return send(res, 200, { ok: true });
+  if (clean(raw.website)) {
+    log('info', 'honeypot_filled', { requestId });
+    return send(res, 200, { ok: true });
+  }
 
   // Time on page: the form records when it was opened
   const startedAt = Number(raw.startedAt);
-  if (!Number.isFinite(startedAt) || Date.now() - startedAt < MIN_FILL_MS) {
+  const elapsedMs = Date.now() - startedAt;
+  if (!Number.isFinite(startedAt) || elapsedMs < MIN_FILL_MS) {
+    log('warn', 'too_fast', { requestId, elapsedMs: Number.isFinite(elapsedMs) ? elapsedMs : null, minMs: MIN_FILL_MS });
     return send(res, 400, { ok: false, error: 'That was quick! Please check your answers and send the form again.' });
   }
 
   const { data, errors } = validate(raw);
   if (Object.keys(errors).length) {
+    log('info', 'validation_failed', { requestId, fields: Object.keys(errors) }); // field names only
     return send(res, 422, { ok: false, error: 'Please check the highlighted fields.', fields: errors });
   }
 
+  // ---- configuration ----
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.MEMBERSHIP_TO_EMAIL;
-  if (!apiKey || !to) {
-    console.error('Membership form is not configured: set RESEND_API_KEY and MEMBERSHIP_TO_EMAIL.');
+  const store = storageConfig();
+  const emailMissing = missingEnv(['RESEND_API_KEY', 'MEMBERSHIP_TO_EMAIL']);
+  const storageMissing = missingEnv(['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY']);
+  const vercelEnv = process.env.VERCEL_ENV || 'unknown';
+  if (emailMissing.length) log('error', 'email_not_configured', { requestId, vercelEnv, missing: emailMissing });
+  // Storage is optional: without it the form runs email-only. Note it once per instance.
+  if (storageMissing.length && !storageNoticeLogged) {
+    storageNoticeLogged = true;
+    log('info', 'storage_not_configured', { requestId, vercelEnv, missing: storageMissing, mode: 'email_only' });
+  }
+  if (emailMissing.length && !store) {
     return send(res, 500, { ok: false, error: 'Our membership form isn’t working right now.' });
   }
 
-  const submittedAt = lagosTime(new Date());
-  const team = teamEmail(data, submittedAt);
-  try {
-    await sendEmail(apiKey, {
-      from: FROM,
-      to: [to],
-      reply_to: data.email,
-      subject: `New member: ${data.fullName} (${GOING_FURTHER[data.goingFurther][1]})`,
-      html: team.html,
-      text: team.text,
-    });
-  } catch (err) {
-    console.error('Membership email to the team failed:', err.message);
+  // ---- 1. save first, so a failed email never loses a member ----
+  let submissionId = null;
+  if (store) {
+    try {
+      submissionId = await storeSubmission(store, data);
+      log('info', 'stored', { requestId, submissionId });
+    } catch (err) {
+      log('error', 'storage_failed', { requestId, ...describeError(err) });
+    }
+  }
+
+  // ---- 2. email the team ----
+  let teamSent = false;
+  let teamFailure = null;
+  if (!emailMissing.length) {
+    const team = teamEmail(data, lagosTime(new Date()));
+    try {
+      await sendEmail(apiKey, {
+        from: FROM,
+        to: [to],
+        reply_to: data.email,
+        subject: `New member: ${data.fullName} (${GOING_FURTHER[data.goingFurther][1]})`,
+        html: team.html,
+        text: team.text,
+      });
+      teamSent = true;
+    } catch (err) {
+      teamFailure = describeError(err);
+      log('error', 'team_email_failed', { requestId, submissionId, stored: !!submissionId, ...teamFailure });
+    }
+  } else {
+    teamFailure = { reason: 'email_not_configured', missing: emailMissing };
+  }
+
+  if (!submissionId && !teamSent) {
+    // Nothing kept anywhere: the applicant must try again
+    log('error', 'submission_lost', { requestId, storageConfigured: !!store, emailConfigured: !emailMissing.length });
     return send(res, 502, { ok: false, error: 'We couldn’t send your application just now.' });
   }
 
-  // The team has it; a failed confirmation shouldn't make the applicant resend
-  let confirmationSent = true;
-  try {
-    const welcome = confirmationEmail(data);
-    await sendEmail(apiKey, {
-      from: FROM,
-      to: [data.email],
-      subject: 'Welcome to the Beyond4walls family',
-      html: welcome.html,
-      text: welcome.text,
+  if (submissionId && !teamSent) log('warn', 'needs_retry', { requestId, submissionId });
+
+  // ---- 3. confirmation to the applicant (failure never fails the request) ----
+  let confirmationSent = false;
+  if (apiKey) {
+    try {
+      const welcome = confirmationEmail(data);
+      await sendEmail(apiKey, {
+        from: FROM,
+        to: [data.email],
+        subject: 'Welcome to the Beyond4walls family',
+        html: welcome.html,
+        text: welcome.text,
+      });
+      confirmationSent = true;
+    } catch (err) {
+      log('error', 'confirmation_email_failed', { requestId, submissionId, ...describeError(err) });
+    }
+  }
+  // One update records the outcome; rows left 'pending' (function died mid-way) are retried too
+  if (submissionId) {
+    await updateSubmission(store, submissionId, {
+      ...(teamSent
+        ? { team_email_status: 'sent', team_email_sent_at: new Date().toISOString(), team_email_attempts: 1 }
+        : { team_email_status: 'failed', team_email_attempts: emailMissing.length ? 0 : 1, team_email_error: redact(JSON.stringify(teamFailure)) }),
+      confirmation_sent: confirmationSent,
     });
-  } catch (err) {
-    confirmationSent = false;
-    console.error('Membership confirmation email failed:', err.message);
   }
 
   return send(res, 200, { ok: true, confirmationSent });
 };
 
 // Exposed for local tests
-module.exports._test = { validate, escapeHtml, countWords };
+module.exports._test = { validate, escapeHtml, countWords, originAllowed, redact };
