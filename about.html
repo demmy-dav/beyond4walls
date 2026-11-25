@@ -382,6 +382,17 @@
       </div>
     </section>
 
+    <!-- LEADERSHIP TEAM: cards are built by team.js from data/team.json; stays hidden if that can't load -->
+    <section id="team" class="section team" aria-labelledby="team-title" hidden>
+      <div class="container">
+        <div class="board__head">
+          <p class="eyebrow eyebrow--green">The people behind the work</p>
+          <h2 id="team-title" class="section-title">Our Leadership Team</h2>
+        </div>
+        <ul class="team__grid" data-team-grid></ul>
+      </div>
+    </section>
+
     <!-- BOARD OF DIRECTORS -->
     <section id="board" class="section section--tint board" aria-labelledby="board-title">
       <div class="container">
@@ -473,5 +484,6 @@
   </footer>
 
   <script src="main.js" defer></script>
+  <script src="team.js" defer></script>
 </body>
 </html>

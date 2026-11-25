@@ -957,6 +957,79 @@ p { margin: 0; }
   .board-card:hover { transform: none; }
 }
 
+/* Leadership team (about page) ------------------------------------------- */
+/* Cards reuse the .board-card shell; this adds the grid, the lead card,
+   the brand-colour initials tile and the bio line. */
+.team {
+  --brand-ink: #0E2814;
+  border-top: 1px solid var(--line);
+}
+
+.team__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  max-width: 420px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Initials tile, used when someone has no photo (or it fails to load) */
+.team-card__photo { --tile: #E9F4E9; --chip: var(--green); --chip-ink: #fff; background: var(--tile); }
+.team-card__photo--1 { --tile: #EAF6FE; --chip: var(--sky); --chip-ink: var(--brand-ink); }
+.team-card__photo--2 { --tile: #FDF3DC; --chip: var(--orange); --chip-ink: var(--brand-ink); }
+.team-card__initials {
+  display: grid;
+  place-items: center;
+  width: 112px; height: 112px;
+  border-radius: 50%;
+  background: var(--chip);
+  color: var(--chip-ink);
+  font-family: var(--font-head);
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.team-card__photo:has(img) .team-card__initials { display: none; }
+
+.team-card__role { color: var(--green-dark); }
+.team-card__bio {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Executive Director: wider first card, photo beside the text */
+.team-card--lead .team-card__name { font-size: 22px; }
+
+@media (max-width: 600px) {
+  .team-card__name { font-size: 18px; }
+  .team-card__role { font-size: 14.5px; }
+  .team-card__bio { font-size: 14.5px; }
+}
+
+@media (min-width: 560px) {
+  .team__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
+  .team-card--lead {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+  .team-card--lead .team-card__info { align-self: end; padding: 32px 32px 36px; }
+  .team-card--lead .team-card__name { font-size: clamp(22px, 2.4vw, 28px); }
+  .team-card--lead .team-card__bio { font-size: 16px; }
+}
+
+@media (min-width: 1024px) {
+  .team__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* Match the height of the cards beside it rather than its own 4:5 box */
+  .team-card--lead .team-card__photo { aspect-ratio: auto; height: 100%; min-height: 420px; }
+}
+
 /* Home: a new chapter (reform announcement + membership) ----------------- */
 /* Sits above the hero, so it shares the hero background */
 .announce { padding-top: clamp(32px, 5vw, 56px); background: var(--bg-hero); }
