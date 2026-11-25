@@ -4,3 +4,9 @@ assets/TINC25'/
 # Raw source files; web-ready copies live in assets/judges/ and assets/showreel/
 assets/Hackathon Judges/
 assets/For about page/
+
+# Local secrets and Vercel CLI state (keep .env.example)
+.env
+.env.*
+!.env.example
+.vercel

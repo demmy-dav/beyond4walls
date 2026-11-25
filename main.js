@@ -236,7 +236,7 @@ const SHOW_GALLERY = false;
   });
 })();
 
-// Forms (contact, campus ambassadors). The site has no backend, so submissions
+// Forms (contact, campus ambassadors). These pages have no backend, so submissions
 // go through FormSubmit, which emails them to our inbox. Each form's plain
 // action attribute is the no-JS fallback.
 const formKit = (function () {
@@ -360,11 +360,6 @@ const formKit = (function () {
   if (preset) preset.checked = true;
 
   formKit.handleSubmit(form, {
-    // Partnership and sponsorship topics name their own inbox in contact.html
-    inbox: () => {
-      const picked = form.querySelector('input[name="topic"]:checked');
-      return (picked && picked.dataset.inbox) || 'hello@beyond4wallsed.org';
-    },
     payload: (data) => ({
       _subject: `Website message: ${data.get('topic')} (from ${data.get('name')})`,
       _replyto: data.get('email'),
