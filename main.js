@@ -360,11 +360,6 @@ const formKit = (function () {
   if (preset) preset.checked = true;
 
   formKit.handleSubmit(form, {
-    // Partnership and sponsorship topics name their own inbox in contact.html
-    inbox: () => {
-      const picked = form.querySelector('input[name="topic"]:checked');
-      return (picked && picked.dataset.inbox) || 'hello@beyond4wallsed.org';
-    },
     payload: (data) => ({
       _subject: `Website message: ${data.get('topic')} (from ${data.get('name')})`,
       _replyto: data.get('email'),
