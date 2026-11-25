@@ -38,6 +38,7 @@
         <a href="/about" class="nav__link">About</a>
         <a href="/programs" class="nav__link">Programs</a>
         <a href="/contact" class="nav__link">Contact</a>
+        <a href="/membership" class="nav__link">Become a Member</a>
         <a href="/ambassadors" class="btn btn--primary btn--sm">Apply as a campus ambassador</a>
       </nav>
     </div>
@@ -64,13 +65,13 @@
 
     <section class="apply" aria-labelledby="apply-title">
       <div class="container">
-        <form class="apply__card" id="volunteer-form" action="https://formsubmit.co/hello@beyond4wallsed.org" method="POST" novalidate>
-          <input type="hidden" name="_subject" value="Volunteer application">
-          <input type="hidden" name="_template" value="table">
-          <!-- Spam trap: real visitors never see or fill this -->
-          <input type="text" name="_honey" class="visually-hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <input type="hidden" name="applicationId">
-          <input type="hidden" name="roleQuestion">
+        <form class="apply__card" id="volunteer-form" novalidate>
+          <noscript><p class="apply__error">This form needs JavaScript. You can also email us at <a class="text-link" href="mailto:hello@beyond4wallsed.org">hello@beyond4wallsed.org</a>.</p></noscript>
+          <!-- Spam trap: hidden from people and screen readers; bots tend to fill it -->
+          <div class="hp" aria-hidden="true">
+            <label for="vol-website">Website</label>
+            <input id="vol-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
           <h2 id="apply-title" class="visually-hidden">Volunteer application</h2>
 
           <!-- Step indicator, shown by main.js (without JS every part shows at once) -->
@@ -85,96 +86,16 @@
             <legend class="part-head" tabindex="-1"><span class="part-head__num">01</span> Choose a role</legend>
             <p class="part-intro">Pick the role you want most. Skills help, but we select for G.R.I.T. first and skills second.</p>
 
-            <!-- To close a role, set data-status="closed" on its card: it stays visible but can't be picked -->
-            <fieldset class="choice role-grid">
+            <!-- Role cards are loaded from the roles table by volunteer.js; admins open and close roles there -->
+            <fieldset class="choice role-grid" id="vol-roles" aria-describedby="vol-roles-status">
               <legend class="visually-hidden">Your first choice</legend>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Strategic Partnerships" data-role="partnerships" required>
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Strategic Partnerships</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You go out and find the people and organizations who believe in what we're building enough to stand behind it. Every partnership you close is a door opening for someone we haven't met yet.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Communications &amp; PR" data-role="communications">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Communications &amp; PR</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You take everything we're building and give it a voice the world can hear. Without you, great work happens in silence. With you, it becomes a movement.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Programs &amp; Logistics" data-role="programs">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Programs &amp; Logistics</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You turn ideas into things that actually happen, on the ground, on time, for real people. You're the hands that build what everyone else imagines.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Finance" data-role="finance">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Finance</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You make sure every dream we chase is one we can actually afford to chase, and chase well. You protect the house so it can keep growing.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Student Relations" data-role="students">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Student Relations</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You're planting Beyond 4walls into the soil of every campus we touch, one Campus Leader at a time, each one carrying the same fire you carry.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="IT &amp; Technology" data-role="it">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">IT &amp; Technology</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You make sure nothing we build is ever lost. Every idea, every event, every win, you keep it alive and accessible, long after the moment has passed.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Research &amp; Development" data-role="research">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Research &amp; Development</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You keep us honest and forward looking. You find what's true, what's working, and what's next, including through the Monitoring &amp; Evaluation team that reports through you.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Event Experience" data-role="events">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Event Experience</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You're where the vision becomes something people can feel with their own senses, in a room, at an event, in a moment they won't forget.</span>
-                </span>
-              </label>
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Alumni &amp; Community" data-role="alumni">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Alumni &amp; Community</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You make sure nobody who's ever been part of this family truly leaves it. You keep the circle widening instead of closing.</span>
-                </span>
-              </label>
-              <!-- data-question: the extra question from that role's Lead, asked in step 03 -->
-              <label class="role-option" data-status="open">
-                <input type="radio" name="role" value="Volunteer Management" data-role="volunteers" data-question="What makes a volunteer stay?">
-                <span class="role-option__body">
-                  <span class="role-option__top"><span class="role-option__title">Volunteer Management</span><span class="role-option__status">Open</span></span>
-                  <span class="role-option__desc">You find the people willing to give their time for something bigger than themselves, and you make sure that gift is never wasted.</span>
-                </span>
-              </label>
+              <p class="role-grid__status" id="vol-roles-status" role="status">Loading roles…</p>
             </fieldset>
 
             <div class="field role-second">
               <label for="vol-second">Second choice <span class="field__optional">(optional)</span></label>
               <select id="vol-second" name="secondRole">
                 <option value="">No second choice</option>
-                <option>Strategic Partnerships</option>
-                <option>Communications &amp; PR</option>
-                <option>Programs &amp; Logistics</option>
-                <option>Finance</option>
-                <option>Student Relations</option>
-                <option>IT &amp; Technology</option>
-                <option>Research &amp; Development</option>
-                <option>Event Experience</option>
-                <option>Alumni &amp; Community</option>
-                <option>Volunteer Management</option>
               </select>
             </div>
           </fieldset>
@@ -200,7 +121,7 @@
                 <input id="vol-start" name="startDate" type="date" required>
               </div>
               <div class="field field--full">
-                <label class="check">
+                <label class="check check--strong">
                   <input type="checkbox" name="commitment" value="Yes" required>
                   <span>I understand this is a minimum 6 month commitment, and I intend to see it through.</span>
                 </label>
@@ -287,7 +208,7 @@
                 <input id="vol-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required>
               </div>
               <div class="field field--full">
-                <label class="check">
+                <label class="check check--strong">
                   <input type="checkbox" name="consent" value="Yes" required>
                   <span>I agree to Beyond 4walls keeping my answers and contact details so the team can review my application.</span>
                 </label>
@@ -321,8 +242,10 @@
           <h3 class="footer__heading">Explore</h3>
           <a href="/about">About</a>
           <a href="/programs">Programs</a>
+          <a href="/membership">Become a Member</a>
           <a href="/ambassadors">Campus Ambassadors</a>
           <a href="/volunteer">Volunteer</a>
+          <a href="/portal">Applicant portal</a>
         </nav>
         <div class="footer__col">
           <h3 class="footer__heading">Contact</h3>
@@ -347,5 +270,6 @@
   </footer>
 
   <script src="main.js" defer></script>
+  <script src="volunteer.js" defer></script>
 </body>
 </html>
