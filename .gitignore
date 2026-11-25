@@ -10,3 +10,7 @@ assets/For about page/
 .env.*
 !.env.example
 .vercel
+
+# Raw leadership photos and the team-lead form export (contains contact details).
+# Web-ready copies live in assets/team/, public fields in data/team.json.
+assets/leadership team/

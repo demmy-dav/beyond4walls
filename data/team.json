@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Adesina Michael",
+    "role": "Executive Director",
+    "bio": "Leading Strategy and Execution, managing stakeholder relationships at Beyond4Walls.",
+    "photo": "michael-adesina.jpg",
+    "order": 1
+  },
+  {
+    "name": "Adebayo Praise",
+    "role": "Admin Lead",
+    "photo": "praise-adebayo.jpg",
+    "order": 2
+  },
+  {
+    "name": "Adewusi Iretunde",
+    "role": "Lead, Communications & PR",
+    "bio": "Good stories don't tell themselves. That's where I come in.",
+    "photo": "iretunde-adewusi.jpg",
+    "order": 4
+  },
+  {
+    "name": "Nola Abdullah",
+    "role": "Lead, Programs & Logistics",
+    "bio": "A Computer Science student, entrepreneur, and a creative passionate about technology, storytelling, leadership, and building ideas that create impact.",
+    "photo": "abdullah-nola.jpg",
+    "order": 5
+  },
+  {
+    "name": "Ojo Joseph",
+    "role": "Lead, IT & Technology",
+    "photo": "joseph-ojo.jpg",
+    "order": 8
+  },
+  {
+    "name": "Akiode Oluwademilade",
+    "role": "Lead, IT & Technology",
+    "bio": "Creative technologist who builds what's needed: practical technology solutions that serve people, communities and nations.",
+    "photo": "oluwademilade-akiode.jpg",
+    "order": 8
+  }
+]
